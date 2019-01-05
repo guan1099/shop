@@ -1,19 +1,12 @@
-@extends('layouts.mama')
+@extends('layouts.bst')
 
 @section('title')
     {{$title}}
 @endsection
 
-@section('header')
-    @parent
-    <p style="color: red;">This is Child header.</p>
-@endsection
-
-
-
 @section('content')
-    <form action="">
-        <table border="1px">
+        <h1 align="center" style="color:blue;">欢迎UID:{{$_COOKIE['uid']}}登陆</h1>
+        <table class="table table-bordered">
             <tr>
                 <td>ID</td>
                 <td>名称</td>
@@ -24,18 +17,12 @@
             @foreach($list as $v)
                 <tr>
                     <td>{{$v->uid}}</td>
-                    <td>{{$v->name}}</td>
+                    <td>{{$v->username}}</td>
                     <td>{{$v->age}}</td>
                     <td>{{$v->email}}</td>
                     <td>{{date('Y-m-d H:i:s',$v->atime)}}</td>
                 </tr>
             @endforeach
         </table>
-    </form>
 @endsection
 
-
-@section('footer')
-    @parent
-    <p style="color: red;">This is Child footer .</p>
-@endsection

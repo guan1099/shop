@@ -46,6 +46,14 @@ Route::any('/test/abc','Test\TestController@abc');
 Route::any('/test/add','Test\TestController@add');
 Route::any('/test/list','Test\TestController@list');
 
+
+
+//注册
+Route::get('/userregister','Test\TestController@register');
+Route::post('/userregister','Test\TestController@registerdo');
+//登录
+Route::get('/userlogin','Test\TestController@login');
+Route::post('/userlogin','Test\TestController@logindo');
 //时间测试
 Route::any('test/dd',function(){
     echo date('Y-m-d H:i:s');
