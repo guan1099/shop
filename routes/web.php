@@ -44,16 +44,25 @@ Route::get('/query/where','Test\TestController@query2');
 
 Route::any('/test/abc','Test\TestController@abc');
 Route::any('/test/add','Test\TestController@add');
-Route::any('/test/list','Test\TestController@list');
+Route::any('/test/list','Test\TestController@list')->middleware('check.login.token');
 
 
 
 //注册
-Route::get('/userregister','Test\TestController@register');
-Route::post('/userregister','Test\TestController@registerdo');
+Route::get('/userregister','User\UserController@register');
+Route::post('/userregister','User\UserController@registerdo');
 //登录
-Route::get('/userlogin','Test\TestController@login');
-Route::post('/userlogin','Test\TestController@logindo');
+Route::get('/userlogin','User\UserController@login');
+Route::post('/userlogin','User\UserController@logindo');
+//购物车
+Route::get('/cart/list','Cart\CartController@list')->middleware('check.login.token');
+Route::get('/cart/add/{goods_id}','Cart\CartController@add')->middleware('check.login.token');
+Route::post('/cart/addcart','Cart\CartController@addcart')->middleware('check.login.token');
+Route::get('/cart/del/{goods_id}','Cart\CartController@del')->middleware('check.login.token');
+Route::get('/cart/quit','Cart\CartController@quit');
+//商品
+Route::get('/goodslist','User\UserController@goodslist')->middleware('check.login.token');
+Route::get('/goodsdetail/{id}','Goods\IndexController@index');
 //时间测试
 Route::any('test/dd',function(){
     echo date('Y-m-d H:i:s');

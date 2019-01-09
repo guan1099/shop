@@ -3,6 +3,7 @@
 @section('content')
     <form action="/userregister" method="post">
         {{csrf_field()}}
+        <font size="24px">注册</font>
         <div class="form-group">
             <label for="exampleInputUsername" >Acount</label>
             <input type="text" class="form-control" style="width:500px;" id="exampleInputPassword1" name="username" placeholder="账号">

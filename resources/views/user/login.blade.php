@@ -2,6 +2,7 @@
 @section('content')
     <form action="/userlogin" method="post">
         {{csrf_field()}}
+        <font size="24px">登录</font>
         <div class="form-group">
             <label for="exampleInputUsername" >Acount</label>
             <input type="text" class="form-control" style="width:500px;" name="username" placeholder="账号">

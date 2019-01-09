@@ -6,6 +6,7 @@
 
 @section('content')
         <h1 align="center" style="color:blue;">欢迎UID:{{$_COOKIE['uid']}}登陆</h1>
+        <a href="/test/quit">退出</a>
         <table class="table table-bordered">
             <tr>
                 <td>ID</td>
