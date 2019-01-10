@@ -24,5 +24,6 @@
             </tr>
         @endforeach
     </table>
+    <a href="/order/add" id="submit_order" class="btn btn-default"> 提交订单 </a>
 @endsection
 

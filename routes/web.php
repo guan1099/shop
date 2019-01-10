@@ -59,10 +59,11 @@ Route::get('/cart/list','Cart\CartController@list')->middleware('check.login.tok
 Route::get('/cart/add/{goods_id}','Cart\CartController@add')->middleware('check.login.token');
 Route::post('/cart/addcart','Cart\CartController@addcart')->middleware('check.login.token');
 Route::get('/cart/del/{goods_id}','Cart\CartController@del')->middleware('check.login.token');
-Route::get('/cart/quit','Cart\CartController@quit');
 //商品
-Route::get('/goodslist','User\UserController@goodslist')->middleware('check.login.token');
+Route::get('/goodslist','User\UserController@goodslist');
 Route::get('/goodsdetail/{id}','Goods\IndexController@index');
+//订单
+Route::any('/order/add','Order\OrderController@addorder')->middleware('check.login.token');
 //时间测试
 Route::any('test/dd',function(){
     echo date('Y-m-d H:i:s');

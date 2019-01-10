@@ -10,9 +10,13 @@ use App\Model\CartModel;
 class CartController extends Controller
 {
     //
+    public $uid;
     public function __construct()
     {
-
+        $this->middleware(function ($request, $next) {
+            $this->uid = session()->get('uid');
+            return $next($request);
+        });
     }
     public function addcart(Request $request){
         $goods_id=$request->input('goods_id');
@@ -20,16 +24,29 @@ class CartController extends Controller
         $res=GoodsModel::where(['goods_id'=>$goods_id])->value('goods_store');
         if($res<=0){
             $response = [
-                'errno' => 5001,
+                'error' => 5001,
                 'msg'   => '库存不足'
+            ];
+            return $response;
+        }else if($res<$num){
+            $response = [
+                'error' => 5003,
+                'msg'   => '购买数量超过库存数量'
             ];
             return $response;
         }
         $where=[
             'goods_id'=>$goods_id,
-            'uid'=>session()->get('uid')
+            'uid'=>$this->uid
         ];
         $rel=CartModel::where($where)->first();
+        if(($rel['goods_num']+$num)>$res){
+            $response = [
+                'error' => 5004,
+                'msg'   => '购物车数量大于库存数量'
+            ];
+            return $response;
+        }
         if($rel){
             $update=[
                 'goods_num'=>$rel['goods_num']+$num,
@@ -47,7 +64,7 @@ class CartController extends Controller
         $data=[
             'goods_id'=>$goods_id,
             'goods_num'=>$num,
-            'uid'=>session()->get('uid'),
+            'uid'=>$this->uid,
             'atime'=>time()
         ];
         $cartId=CartModel::insertGetId($data);
@@ -97,7 +114,7 @@ class CartController extends Controller
 
     }
     public function list(Request $request){
-        $uid = session()->get('uid');
+        $uid = $this->uid;
         $where=[
             'uid'=>$uid
         ];
@@ -141,8 +158,5 @@ class CartController extends Controller
             header('refresh:2;url=/cart/list');
             echo "删除失败";
         }
-    }
-    public function quit(){
-        Session()->flush();
     }
 }
