@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <h1 align="center" style="color:blue;">欢迎UID:{{$_COOKIE['uid']}}登陆</h1>
+    <h1 align="center" style="color:blue;">购物车列表</h1>
     <table class="table table-bordered">
         <tr>
             <td>ID</td>

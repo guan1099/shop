@@ -1,4 +1,4 @@
-@extends('layouts.bst')
+@extends('layouts.mama')
 @section('content')
     <form action="/userlogin" method="post">
         {{csrf_field()}}

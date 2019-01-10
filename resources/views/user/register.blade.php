@@ -1,4 +1,4 @@
-@extends('layouts.bst')
+@extends('layouts.mama')
 
 @section('content')
     <form action="/userregister" method="post">

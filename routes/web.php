@@ -56,7 +56,6 @@ Route::get('/userlogin','User\UserController@login');
 Route::post('/userlogin','User\UserController@logindo');
 //购物车
 Route::get('/cart/list','Cart\CartController@list')->middleware('check.login.token');
-Route::get('/cart/add/{goods_id}','Cart\CartController@add')->middleware('check.login.token');
 Route::post('/cart/addcart','Cart\CartController@addcart')->middleware('check.login.token');
 Route::get('/cart/del/{goods_id}','Cart\CartController@del')->middleware('check.login.token');
 //商品
@@ -64,6 +63,10 @@ Route::get('/goodslist','User\UserController@goodslist');
 Route::get('/goodsdetail/{id}','Goods\IndexController@index');
 //订单
 Route::any('/order/add','Order\OrderController@addorder')->middleware('check.login.token');
+Route::any('/order/orderlist','Order\OrderController@orderlist')->middleware('check.login.token');
+Route::any('/order/orderdel/{order_number}','Order\OrderController@orderdel')->middleware('check.login.token');
+Route::any('/order/order/{order_number}','Order\OrderController@order')->middleware('check.login.token');
+Route::any('/order/orderpay/{order_id}','Order\OrderController@orderpay')->middleware('check.login.token');
 //时间测试
 Route::any('test/dd',function(){
     echo date('Y-m-d H:i:s');

@@ -9,7 +9,6 @@ use App\Model\CartModel;
 
 class CartController extends Controller
 {
-    //
     public $uid;
     public function __construct()
     {
@@ -18,10 +17,12 @@ class CartController extends Controller
             return $next($request);
         });
     }
+    //添加购物车
     public function addcart(Request $request){
         $goods_id=$request->input('goods_id');
         $num=$request->input('num');
         $res=GoodsModel::where(['goods_id'=>$goods_id])->value('goods_store');
+        $re=GoodsModel::where(['goods_id'=>$goods_id])->value('goods_name');
         if($res<=0){
             $response = [
                 'error' => 5001,
@@ -62,6 +63,7 @@ class CartController extends Controller
             }
         }
         $data=[
+            'goods_name'=>$re,
             'goods_id'=>$goods_id,
             'goods_num'=>$num,
             'uid'=>$this->uid,
@@ -82,47 +84,18 @@ class CartController extends Controller
             return $response;
         }
     }
-    public function add($goods_id){
-        $cart_goods = session()->get('cart_goods');
-        //检测库存
-        $where = ['goods_id'=>$goods_id];
-        $store = GoodsModel::where($where)->value('goods_store');
-
-        if($store<=0){
-            echo '库存不足';
-            exit;
-        }
-        //是否已在购物车中
-        if(!empty($cart_goods)){
-            if(in_array($goods_id,$cart_goods)){
-                header('refresh:2;url=/cart/list');
-                echo '已存在购物车中';
-                exit;
-            }
-        }
-
-        session()->push('cart_goods',$goods_id);
-
-        //减库存
-
-        $rs = GoodsModel::where(['goods_id'=>$goods_id])->decrement('goods_store');
-
-        if($rs){
-            header('refresh:2;url=/cart/list');
-            echo '添加成功';
-        }
-
-    }
+    //购物车列表
     public function list(Request $request){
         $uid = $this->uid;
         $where=[
             'uid'=>$uid
         ];
-        $res=CartModel::where($where)->get();
-        if(!$res){
-            header('refresh:2;,url=/goodslist');
+        $res=CartModel::where($where)->get()->toArray();
+        if(empty($res)){
+            header('refresh:2;url=/goodslist');
             echo "购物车为空";exit;
         }
+        $list=[];
         foreach($res as $k=>$v){
             $cartInfo=GoodsModel::where(['goods_id'=>$v['goods_id']])->first();
             $cartInfo['num']=$v['goods_num'];
@@ -135,6 +108,7 @@ class CartController extends Controller
         ];
         return view('cart.cart',$data);
     }
+    //购物车商品删除
     public function del($goods_id){
         if(empty($goods_id)){
             header('refresh:2;url=/cart/list');
