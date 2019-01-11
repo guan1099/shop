@@ -48,7 +48,7 @@ class UserController extends Controller
         ];
         $uid=UserModel::insertGetId($data);
         if($uid){
-            setcookie('uid',$uid,time()+86400,'/','leningshop.com',false,true);
+            setcookie('uid',$uid,time()+86400,'/','',false,true);
             header("refresh:2;/test/list");
             echo "注册成功,正在跳转";
         }else{
@@ -69,8 +69,8 @@ class UserController extends Controller
         if($res){
             if(password_verify($pwd,$res->pwd)){
                 $token = substr(md5(time().mt_rand(1,99999)),10,10);
-                setcookie('uid',$res->uid,time()+86400,'/','leningshop.com',false,true);
-                setcookie('token',$token,time()+86400,'/','leningshop.com',false,true);
+                setcookie('uid',$res->uid,time()+86400,'/','',false,true);
+                setcookie('token',$token,time()+86400,'/','',false,true);
                 $request->session()->put('u_token',$token);
                 $request->session()->put('uid',$res->uid);
                 header('refresh:1;/goodslist');

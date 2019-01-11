@@ -26,9 +26,14 @@
                         {{$v['order_status']="未支付,未确认,未发货"}}
                     <?php }else if($v['order_status']==2){ ?>
                         {{$v['order_status']="订单已取消"}}
+                    <?php }else if($v['order_status']==3){ ?>
+                        {{$v['order_status']="已支付,未确认,未发货"}}
                     <?php } ?>
                 </td>
-                <td><a href="/order/order/{{$v['order_number']}}"> 订单详情 </a>||<a href="/order/orderdel/{{$v['order_number']}}"> 删除 </a></td>
+                <td>
+                    <a href="/order/order/{{$v['order_number']}}"> 订单详情 </a>||
+                    <a href="/order/orderdel/{{$v['order_number']}}"> 删除 </a>
+                </td>
             </tr>
         @endforeach
     </table>
