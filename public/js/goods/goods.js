@@ -14,9 +14,6 @@ $("#add_cart_btn").click(function(e){
         success :   function(d){
             if(d.error==301){
                 window.location.href=d.url;
-            }
-            if(d.error==5003){
-                alert(d.msg);
             }else{
                 alert(d.msg);
                 window.location.href="/cart/list";

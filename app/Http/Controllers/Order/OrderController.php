@@ -110,14 +110,24 @@ class OrderController extends Controller
         print_r($res);
     }
     //订单支付
-    public function orderpay($order_id){
-        $where=[
-            'order_id'=>$order_id
+    public function orderpay($order_id)
+    {
+        $where = [
+            'order_id' => $order_id
         ];
-        $order_status=OrderModel::where($where)->value('order_status');
-        $res=OrderModel::where($where)->update(['order_status'=>3]);
-        if($res){
-            echo "ID:$order_id"."支付成功";
+        $order_status = OrderModel::where($where)->value('order_status');
+        $res = OrderModel::where($where)->update(['order_status' => 3]);
+        if ($res) {
+            echo "ID:$order_id" . "支付成功";
         }
+    }
+    public function pay(){
+        $url='http://word.tactshan.com';
+        $client = new Client([
+            'base_uri' => $url,
+            'timeout'  => 2.0,
+        ]);
+        $response = $client->request('GET', '/order.php');
+        echo $response->getBody();
     }
 }

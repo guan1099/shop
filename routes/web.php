@@ -56,7 +56,7 @@ Route::get('/userlogin','User\UserController@login');
 Route::post('/userlogin','User\UserController@logindo');
 //购物车
 Route::get('/cart/list','Cart\CartController@list')->middleware('check.login.token');
-Route::post('/cart/addcart','Cart\CartController@addcart')->middleware('check.login.token');
+Route::post('/cart/addcart','Cart\CartController@addcart')->middleware('check.cookie');
 Route::get('/cart/del/{goods_id}','Cart\CartController@del')->middleware('check.login.token');
 //商品
 Route::get('/goodslist','User\UserController@goodslist');
@@ -67,6 +67,8 @@ Route::any('/order/orderlist','Order\OrderController@orderlist')->middleware('ch
 Route::any('/order/orderdel/{order_number}','Order\OrderController@orderdel')->middleware('check.login.token');
 Route::any('/order/order/{order_number}','Order\OrderController@order')->middleware('check.login.token');
 Route::any('/order/orderpay/{order_id}','Order\OrderController@orderpay')->middleware('check.login.token');
+//支付
+Route::get('/order/pay','Order\OrderController@pay');
 //时间测试
 Route::any('test/dd',function(){
     echo date('Y-m-d H:i:s');
