@@ -13,6 +13,7 @@ $("#add_cart_btn").click(function(e){
         dataType:   'json',
         success :   function(d){
             if(d.error==301){
+                alert('请登录');
                 window.location.href=d.url;
             }else{
                 alert(d.msg);
