@@ -68,7 +68,7 @@ Route::any('/order/orderdel/{order_number}','Order\OrderController@orderdel')->m
 Route::any('/order/order/{order_number}','Order\OrderController@order')->middleware('check.login.token');
 //支付
 Route::get('/pay/alipay/test','Pay\payController@test')->middleware('check.login.token');        //测试
-Route::get('/pay/alipay/pay','Pay\PayController@pay');     //订单支付
+Route::get('/pay/alipay/pay','Pay\PayController@pay');   //订单支付
 Route::post('/pay/alipay/notify','Pay\PayController@notify');
 //时间测试
 Route::any('test/dd',function(){
