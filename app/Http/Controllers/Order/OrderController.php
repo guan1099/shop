@@ -121,13 +121,4 @@ class OrderController extends Controller
             echo "ID:$order_id" . "支付成功";
         }
     }
-    public function pay(){
-        $url='http://word.tactshan.com';
-        $client = new Client([
-            'base_uri' => $url,
-            'timeout'  => 2.0,
-        ]);
-        $response = $client->request('GET', '/order.php');
-        echo $response->getBody();
-    }
 }
