@@ -224,13 +224,13 @@ class PayController extends Controller
         }
         echo '<pre>';print_r($_GET);echo '</pre>';
     }
-    public function dealOrder($_POST){
+    public function dealOrder($arr){
         //加积分
         $where=[
-            'order'=>$_POST['out_trade_no']
+            'order'=>$arr['out_trade_no']
         ];
         $data=[
-            'score'=>$_POST['total_amount']
+            'score'=>$arr['total_amount']
         ];
         UserModel::where($where)->update($data);
     }
