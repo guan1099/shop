@@ -234,5 +234,6 @@ class PayController extends Controller
             'score'=>$data['total_amount']+$res->score
         ];
         UserModel::where($where)->update($arr);
+        return true;
     }
 }
