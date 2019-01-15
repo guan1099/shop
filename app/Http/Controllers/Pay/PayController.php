@@ -13,6 +13,7 @@ class PayController extends Controller
     public $notify_url;
     public $return_url;
     public $rsaPrivateKeyFilePath = './key/priv.key';
+    public $aliPubKey = './key/ali_pub.key';
     //
     public function __construct(){
         $this->app_id=env('APP_ID');
@@ -34,11 +35,20 @@ class PayController extends Controller
         $where=[
             'order_id'=>$order_id
         ];
-        $rel=OrderModel::where($where)->first();
+        $rel=OrderModel::where($where)->first()->toArray();
+        if(!$rel){
+            die('订单号不存在');
+        }
+        if($rel['is_pay']==1){
+            die('订单已支付');
+        }
+        if($rel['order_status']==2){
+            die('订单已取消');
+        }
         $bizcont = [
-            'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6),
-            'out_trade_no'      => 'oid'.date('YmdHis').mt_rand(1111,2222),
-            'total_amount'      => $rel->order_amount,
+            'subject'           => 'diingdan:'. mt_rand(1111,9999).str_random(6),
+            'out_trade_no'      => $rel['order_number'],
+            'total_amount'      => $rel['order_amount'],
             'product_code'      => 'QUICK_WAP_WAY',
         ];
 
@@ -140,11 +150,61 @@ class PayController extends Controller
 
         return $data;
     }
+    //验签
+    function verify($params) {
+        $sign = $params['sign'];
+        $params['sign_type'] = null;
+        $params['sign'] = null;
+
+        //读取公钥文件
+        $pubKey = file_get_contents($this->aliPubKey);
+        $pubKey = "-----BEGIN PUBLIC KEY-----\n" .
+            wordwrap($pubKey, 64, "\n", true) .
+            "\n-----END PUBLIC KEY-----";
+        //转换为openssl格式密钥
+
+        $res = openssl_get_publickey($pubKey);
+        ($res) or die('支付宝RSA公钥错误。请检查公钥文件格式是否正确');
+
+        //调用openssl内置方法验签，返回bool值
+
+        $result = (openssl_verify($this->getSignContent($params), base64_decode($sign), $res, OPENSSL_ALGO_SHA256)===1);
+        openssl_free_key($res);
+
+        return $result;
+    }
     public function alinotify(){
         $data = json_encode($_POST);
         $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
         //记录日志
         file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        //验签
+        $res = $this->verify($_POST);
+
+        $log_str = '>>>> ' . date('Y-m-d H:i:s');
+        if($res === false){
+            //记录日志 验签失败
+            $log_str .= " Sign Failed!<<<<< \n\n";
+            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        }else{
+            $log_str .= " Sign OK!<<<<< \n\n";
+            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        }
+        //修改订单信息
+        if($_POST['trade_status']=='TRADE_SUCCESS'){
+            //更新订单状态
+            $oid = $_POST['out_trade_no'];     //商户订单号
+            $info = [
+                'order_status'  =>3,
+                'is_pay'        => 1,       //支付状态  0未支付 1已支付
+                'pay_amount'    => $_POST['total_amount'],    //支付金额
+                'pay_time'      => strtotime($_POST['gmt_payment']), //支付时间
+                'plat_number'   => $_POST['trade_no'],      //支付宝订单号
+                'plat'          => 1,      //平台编号 1支付宝 2微信
+            ];
+
+            OrderModel::where(['order_number'=>$oid])->update($info);
+        }
     }
     public function alireturn(){
         echo '<pre>';print_r($_GET);echo '</pre>';die;
