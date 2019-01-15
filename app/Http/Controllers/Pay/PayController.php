@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pay;
 
+use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
@@ -205,10 +206,32 @@ class PayController extends Controller
 
             OrderModel::where(['order_number'=>$oid])->update($info);
         }
+        //订单逻辑
+        $this->dealOrder($_POST);
         echo 'success';
     }
     public function alireturn(){
-        echo '<pre>';print_r($_GET);echo '</pre>';die;
-
+        //验签
+        $res = $this->verify($_GET);
+        $log_str = '>>>> ' . date('Y-m-d H:i:s');
+        if($res === false){
+            //记录日志 验签失败
+            $log_str .= " Sign Failed!<<<<< \n\n";
+            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        }else{
+            $log_str .= " Sign OK!<<<<< \n\n";
+            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        }
+        echo '<pre>';print_r($_GET);echo '</pre>';
+    }
+    public function dealOrder($_POST){
+        //加积分
+        $where=[
+            'order'=>$_POST['out_trade_no']
+        ];
+        $data=[
+            'score'=>$_POST['total_amount']
+        ];
+        UserModel::where($where)->update($data);
     }
 }

@@ -25,9 +25,9 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">分类1</a></li>
-                    <li><a href="#">分类2</a></li>
-                    <li><a href="#">分类3</a></li>
+                    <li class="active"><a href="/goodslist">商品列表</a></li>
+                    <li><a href="/order/orderlist">订单列表</a></li>
+                    <li><a href="/cart/list">购物车列表</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
