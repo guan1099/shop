@@ -23,7 +23,6 @@
                 </tr>
             </table>
         @endforeach
-
-    <a class="btn btn-default" href="/pay/alipay/test" role="button">支付</a>
+    <a class="btn btn-default" href="/pay/alipay/test/{{$order_id}}" role="button">支付</a>
 @endsection
 
