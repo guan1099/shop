@@ -207,10 +207,13 @@ class PayController extends Controller
             OrderModel::where(['order_number'=>$oid])->update($info);
         }
         //订单逻辑
-        $this->dealOrder($_POST);
+        if(!$this->dealOrder($_POST)){
+            die('支付失败');
+        };
         echo 'success';
     }
     public function alireturn(){
+
         //验签
         $res = $this->verify($_GET);
         $log_str = '>>>> ' . date('Y-m-d H:i:s');
@@ -223,17 +226,26 @@ class PayController extends Controller
             file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
         }
         echo '<pre>';print_r($_GET);echo '</pre>';
+        //$this->dealOrder($_GET);
     }
     public function dealOrder($data){
         //加积分
         $where=[
-            'uid'=>session()->get('uid')
+            'order_number'=>$_POST['out_trade_no']
         ];
-        $res=UserModel::where($where)->first();
+        $res=OrderModel::where($where)->first();
+        $whereup=[
+            'uid'=>$res->uid
+        ];
+        $res=UserModel::where($whereup)->first();
         $arr=[
             'score'=>$data['total_amount']+$res->score
         ];
-        UserModel::where($where)->update($arr);
-        return true;
+        $res=UserModel::where($where)->update($arr);
+        if($res){
+            return true;
+        }else {
+            return false;
+        }
     }
 }
