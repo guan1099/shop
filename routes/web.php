@@ -62,14 +62,15 @@ Route::get('/cart/del/{goods_id}','Cart\CartController@del')->middleware('check.
 Route::get('/goodslist','User\UserController@goodslist');
 Route::get('/goodsdetail/{id}','Goods\IndexController@index');
 //订单
-Route::any('/order/add','Order\OrderController@addorder')->middleware('check.login.token');
-Route::any('/order/orderlist','Order\OrderController@orderlist')->middleware('check.login.token');
-Route::any('/order/orderdel/{order_number}','Order\OrderController@orderdel')->middleware('check.login.token');
-Route::any('/order/order/{order_number}','Order\OrderController@order')->middleware('check.login.token');
+Route::get('/order/add','Order\OrderController@addorder')->middleware('check.login.token');
+Route::get('/order/orderlist','Order\OrderController@orderlist')->middleware('check.login.token');
+Route::get('/order/orderdel/{order_number}','Order\OrderController@orderdel')->middleware('check.login.token');
+Route::get('/order/order/{order_number}','Order\OrderController@order')->middleware('check.login.token');
 //支付
-Route::get('/pay/alipay/test','Pay\PayController@test')->middleware('check.login.token');        //测试
+Route::get('/pay/alipay/test/{order_id}','Pay\PayController@test')->middleware('check.login.token');        //测试
 Route::get('/pay/alipay/pay','Pay\PayController@pay');   //订单支付
-Route::post('/pay/alipay/notify','Pay\PayController@notify');
+Route::post('/pay/alipay/paynotify','Pay\PayController@alinotify');//异步
+Route::get('/pay/alipay/payreturn','Pay\PayController@alireturn');//同步
 //时间测试
 Route::any('test/dd',function(){
     echo date('Y-m-d H:i:s');

@@ -5,13 +5,21 @@ namespace App\Http\Controllers\Pay;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
+use App\Model\OrderModel;
 class PayController extends Controller
 {
-    public $app_id = '2016092200572083';
-    public $gate_way = 'https://openapi.alipaydev.com/gateway.do';
-    public $notify_url = 'http://qi.tactshan.com/pay/alipay/notify';
+    public $app_id;
+    public $gate_way;
+    public $notify_url;
+    public $return_url;
     public $rsaPrivateKeyFilePath = './key/priv.key';
     //
+    public function __construct(){
+        $this->app_id=env('APP_ID');
+        $this->gate_way = env('GATE_WAY');
+        $this->notify_url = env('NOTIFY_URL');
+        $this->return_url = env('RETURN_URL');
+    }
     public function pay(){
         $url='http://word.tactshan.com';
         $client = new Client([
@@ -21,15 +29,17 @@ class PayController extends Controller
         $response = $client->request('GET', '/order.php');
         echo $response->getBody();
     }
-    public function test()
+    public function test($order_id)
     {
-
+        $where=[
+            'order_id'=>$order_id
+        ];
+        $rel=OrderModel::where($where)->first();
         $bizcont = [
             'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6),
             'out_trade_no'      => 'oid'.date('YmdHis').mt_rand(1111,2222),
-            'total_amount'      => 100,
+            'total_amount'      => $rel->order_amount,
             'product_code'      => 'QUICK_WAP_WAY',
-
         ];
 
         $data = [
@@ -40,6 +50,7 @@ class PayController extends Controller
             'sign_type'   => 'RSA2',
             'timestamp'   => date('Y-m-d H:i:s'),
             'version'   => '1.0',
+            'return_url' => $this->return_url,
             'notify_url'   => $this->notify_url,
             'biz_content'   => json_encode($bizcont),
         ];
@@ -128,5 +139,11 @@ class PayController extends Controller
 
 
         return $data;
+    }
+    public function alinotify(){
+        echo "1";
+    }
+    public function alireturn(){
+        echo '<pre>';print_r($_GET);echo '</pre>';die;
     }
 }
