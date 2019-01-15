@@ -207,7 +207,7 @@ class PayController extends Controller
             OrderModel::where(['order_number'=>$oid])->update($info);
         }
         //订单逻辑
-        $this->dealOrder($_POST);
+        $this->dealOrder($data);
         echo 'success';
     }
     public function alireturn(){
@@ -227,7 +227,7 @@ class PayController extends Controller
     public function dealOrder($arr){
         //加积分
         $where=[
-            'order'=>$arr['out_trade_no']
+            'uid'=>session()->get('uid')
         ];
         $data=[
             'score'=>$arr['total_amount']
