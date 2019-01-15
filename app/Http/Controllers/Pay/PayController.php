@@ -207,7 +207,7 @@ class PayController extends Controller
             OrderModel::where(['order_number'=>$oid])->update($info);
         }
         //订单逻辑
-        $this->dealOrder($data);
+        $this->dealOrder($_POST);
         echo 'success';
     }
     public function alireturn(){
@@ -229,8 +229,9 @@ class PayController extends Controller
         $where=[
             'uid'=>session()->get('uid')
         ];
+        $res=UserModel::where($where)->first();
         $arr=[
-            'score'=>$data['total_amount']
+            'score'=>$data['total_amount']+$res->score
         ];
         UserModel::where($where)->update($arr);
     }
