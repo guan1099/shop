@@ -141,7 +141,10 @@ class PayController extends Controller
         return $data;
     }
     public function alinotify(){
-        echo "1";
+        $data = json_encode($_POST);
+        $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
+        //记录日志
+        file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
     }
     public function alireturn(){
         echo '<pre>';print_r($_GET);echo '</pre>';die;
