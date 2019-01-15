@@ -205,8 +205,10 @@ class PayController extends Controller
 
             OrderModel::where(['order_number'=>$oid])->update($info);
         }
+        echo 'success';
     }
     public function alireturn(){
         echo '<pre>';print_r($_GET);echo '</pre>';die;
+
     }
 }
