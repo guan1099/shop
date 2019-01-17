@@ -91,6 +91,7 @@ class UsersController extends Controller
         $form->text('age', '年龄');
         $form->email('email', 'Email');
         $form->password('pwd', '密码');
+        $form->ckeditor('content','文件');
 
         return $form;
     }
