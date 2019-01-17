@@ -8,5 +8,7 @@ class UserModel extends Model
 {
     //
 	public $table = 'p_users';
-	public $timestamps = false;
+//	public $timestamps = true;
+//	public $updated_at=false;
+    protected $primaryKey = 'uid';
 }
