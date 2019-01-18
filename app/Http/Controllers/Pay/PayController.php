@@ -21,6 +21,7 @@ class PayController extends Controller
         $this->gate_way = env('GATE_WAY');
         $this->notify_url = env('NOTIFY_URL');
         $this->return_url = env('RETURN_URL');
+        $this->middleware('auth');
     }
     public function pay(){
         $url='http://word.tactshan.com';

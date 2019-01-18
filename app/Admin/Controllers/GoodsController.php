@@ -10,12 +10,15 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Encore\Admin\Grid;
 use Encore\Admin\Form;
+use Encore\Admin\Show;
 
 use App\Model\GoodsModel;
 
 class GoodsController extends Controller
 {
     use HasResourceActions;
+
+
     public function index(Content $content)
     {
         return $content
@@ -32,11 +35,10 @@ class GoodsController extends Controller
 
         $grid->goods_id('商品ID');
         $grid->goods_name('商品名称');
-        $grid->store('库存');
-        $grid->price('价格');
-        $grid->add_time('添加时间')->display(function($time){
-            return date('Y-m-d H:i:s',$time);
-        });
+        $grid->goods_store('库存');
+        $grid->goods_price('价格');
+        $grid->created_at('添加时间');
+        $grid->content('商品描述');
 
         return $grid;
     }
@@ -44,8 +46,6 @@ class GoodsController extends Controller
 
     public function edit($id, Content $content)
     {
-
-        //echo __METHOD__;die;
         return $content
             ->header('商品管理')
             ->description('编辑')
@@ -53,7 +53,27 @@ class GoodsController extends Controller
     }
 
 
+    //详情展示
+    public function show($id, Content $content)
+    {
+        return $content
+            ->header('Detail')
+            ->description('description')
+            ->body($this->detail($id));
+    }
+    protected function detail($id)
+    {
+        $show = new Show(GoodsModel::findOrFail($id));
 
+        $show->goods_id('ID');
+        $show->goods_name('商品名称');
+        $show->goods_store('商品库存');
+        $show->goods_price('商品价格');
+        $show->created_at('添加时间');
+        $show->content('商品描述');
+
+        return $show;
+    }
     //创建
     public function create(Content $content)
     {
@@ -64,35 +84,6 @@ class GoodsController extends Controller
             ->body($this->form());
     }
 
-    public function update($id)
-    {
-        echo '<pre>';print_r($_POST);echo '</pre>';
-    }
-
-    public function store()
-    {
-        echo '<pre>';print_r($_POST);echo '</pre>';
-    }
-
-
-
-    public function show($id)
-    {
-        echo __METHOD__;echo '</br>';
-    }
-
-    //删除
-    public function destroy($id)
-    {
-
-        $response = [
-            'status' => true,
-            'message'   => 'ok'
-        ];
-        return $response;
-    }
-
-
 
     protected function form()
     {
@@ -100,8 +91,8 @@ class GoodsController extends Controller
 
         $form->display('goods_id', '商品ID');
         $form->text('goods_name', '商品名称');
-        $form->number('store', '库存');
-        $form->currency('price', '价格')->symbol('¥');
+        $form->number('goods_store', '库存');
+        $form->currency('goods_price', '价格')->symbol('¥');
         $form->ckeditor('content','文件');
         return $form;
     }

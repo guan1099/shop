@@ -12,10 +12,7 @@ class CartController extends Controller
     public $uid;
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
-            $this->uid = session()->get('uid');
-            return $next($request);
-        });
+        $this->middleware('auth');
     }
     //添加购物车
     public function addcart(Request $request){

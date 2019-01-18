@@ -55,19 +55,19 @@ Route::post('/userregister','User\UserController@registerdo');
 Route::get('/userlogin','User\UserController@login');
 Route::post('/userlogin','User\UserController@logindo');
 //购物车
-Route::get('/cart/list','Cart\CartController@list')->middleware('check.login.token');
-Route::post('/cart/addcart','Cart\CartController@addcart')->middleware('check.cookie');
-Route::get('/cart/del/{goods_id}','Cart\CartController@del')->middleware('check.login.token');
+Route::get('/cart/list','Cart\CartController@list');
+Route::post('/cart/addcart','Cart\CartController@addcart');
+Route::get('/cart/del/{goods_id}','Cart\CartController@del');
 //商品
 Route::get('/goodslist','User\UserController@goodslist');
 Route::get('/goodsdetail/{id}','Goods\IndexController@index');
 //订单
-Route::get('/order/add','Order\OrderController@addorder')->middleware('check.login.token');
-Route::get('/order/orderlist','Order\OrderController@orderlist')->middleware('check.login.token');
-Route::get('/order/orderdel/{order_number}','Order\OrderController@orderdel')->middleware('check.login.token');
-Route::get('/order/order/{order_number}','Order\OrderController@order')->middleware('check.login.token');
+Route::get('/order/add','Order\OrderController@addorder');
+Route::get('/order/orderlist','Order\OrderController@orderlist');
+Route::get('/order/orderdel/{order_number}','Order\OrderController@orderdel');
+Route::get('/order/order/{order_number}','Order\OrderController@order');
 //支付
-Route::get('/pay/alipay/test/{order_id}','Pay\PayController@test')->middleware('check.login.token');        //测试
+Route::get('/pay/alipay/test/{order_id}','Pay\PayController@test');        //测试
 Route::get('/pay/alipay/pay','Pay\PayController@pay');   //订单支付
 Route::post('/pay/alipay/paynotify','Pay\PayController@alinotify');//异步
 Route::get('/pay/alipay/payreturn','Pay\PayController@alireturn');//同步
@@ -75,3 +75,7 @@ Route::get('/pay/alipay/payreturn','Pay\PayController@alireturn');//同步
 Route::any('test/dd',function(){
     echo date('Y-m-d H:i:s');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -20,8 +20,8 @@ class UsersController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('商品管理')
-            ->description('商品列表')
+            ->header('用户管理')
+            ->description('用户列表')
             ->body($this->grid());
     }
 
@@ -91,7 +91,6 @@ class UsersController extends Controller
         $form->text('age', '年龄');
         $form->email('email', 'Email');
         $form->password('pwd', '密码');
-        $form->ckeditor('content','文件');
 
         return $form;
     }
