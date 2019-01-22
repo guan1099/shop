@@ -71,11 +71,13 @@ Route::get('/pay/alipay/test/{order_id}','Pay\PayController@test');        //测
 Route::get('/pay/alipay/pay','Pay\PayController@pay');   //订单支付
 Route::post('/pay/alipay/paynotify','Pay\PayController@alinotify');//异步
 Route::get('/pay/alipay/payreturn','Pay\PayController@alireturn');//同步
+//文件上传
+Route::get('/file/index','File\IndexController@index');
+Route::post('/file/upload','File\IndexController@upload');
 //时间测试
 Route::any('test/dd',function(){
     echo date('Y-m-d H:i:s');
 });
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
