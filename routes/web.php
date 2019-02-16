@@ -82,3 +82,7 @@ Route::any('test/dd',function(){
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+
+//微信
+Route::get('/weixin/valid1','Weixin\WeixinController@validToken1');
+Route::post('/weixin/valid1','Weixin\WeixinController@wxEvent');        //接收微信服务器事件推送
