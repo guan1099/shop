@@ -5,19 +5,34 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
+
 use App\Model\UserModel;
 use App\Model\GoodsModel;
 
 class UserController extends Controller
 {
-    public function goodslist(){
-        $res=GoodsModel::all();
+    //use Searchable;
+    public function goodslist(Request $request){
+        $name=$request->input('goods_name');
+        if(empty($name)){
+            $res=GoodsModel::paginate(3);
+        }else{
+            $res=DB::table('p_goods')->where('goods_name','like','%'.$name.'%')->paginate(3);
+        }
         //print_r($res);die;
         $data=[
             'title'=>'lening',
             'list'=>$res
         ];
         return view('goods.list',$data);
+    }
+    public function goodslist1(Request $request){
+        $name=$request->input('name');
+        $response = [
+            'error' => 5001,
+            'msg'   => $name
+        ];
+        return $response;
     }
     public function register(){
         return view('user.register');

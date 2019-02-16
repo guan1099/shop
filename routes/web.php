@@ -60,6 +60,7 @@ Route::post('/cart/addcart','Cart\CartController@addcart');
 Route::get('/cart/del/{goods_id}','Cart\CartController@del');
 //商品
 Route::get('/goodslist','User\UserController@goodslist');
+Route::get('/goodslist1','User\UserController@goodslist1');
 Route::get('/goodsdetail/{id}','Goods\IndexController@index');
 //订单
 Route::get('/order/add','Order\OrderController@addorder');
