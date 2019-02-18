@@ -12,14 +12,10 @@ $("#add_cart_btn").click(function(e){
         data    :   {goods_id:goods_id,num:num},
         dataType:   'json',
         success :   function(d){
-            if(d.error==301){
-                alert('请登录');
-                window.location.href=d.url;
-            }else{
+            if(d.error!=301){
                 alert(d.msg);
-                window.location.href="/cart/list";
+                window.location.href = "/cart/list";
             }
-
         }
     });
 });

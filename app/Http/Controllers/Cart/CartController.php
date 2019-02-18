@@ -10,10 +10,6 @@ use App\Model\CartModel;
 class CartController extends Controller
 {
     public $uid;
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     //添加购物车
     public function addcart(Request $request){
         $goods_id=$request->input('goods_id');
@@ -25,13 +21,13 @@ class CartController extends Controller
                 'error' => 5001,
                 'msg'   => '库存不足'
             ];
-            return $response;
+            echo json_encode ($response);
         }else if($res<$num){
             $response = [
                 'error' => 5003,
                 'msg'   => '购买数量超过库存数量'
             ];
-            return $response;
+            echo json_encode ($response);
         }
         $where=[
             'goods_id'=>$goods_id,
@@ -43,7 +39,7 @@ class CartController extends Controller
                 'error' => 5004,
                 'msg'   => '购物车数量大于库存数量'
             ];
-            return $response;
+            echo json_encode ($response);
         }
         if($rel){
             $update=[
@@ -56,7 +52,7 @@ class CartController extends Controller
                     'error' => 0,
                     'msg'   => '已存在购物车，添加成功'
                 ];
-                return $response;
+                echo json_encode ($response);
             }
         }
         $data=[
@@ -72,13 +68,13 @@ class CartController extends Controller
                 'error' => 0,
                 'msg'   => '添加成功'
             ];
-            return $response;
+            echo json_encode ($response);
         }else{
             $response = [
                 'error' => 5002,
                 'msg'   => '添加失败，请重新添加'
             ];
-            return $response;
+            echo json_encode ($response);
         }
     }
     //购物车列表

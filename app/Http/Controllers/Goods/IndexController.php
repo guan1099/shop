@@ -8,7 +8,11 @@ use App\Model\GoodsModel;
 
 class IndexController extends Controller
 {
-    //
+//    public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
+//    //
     public function index($goods_id){
         $res=GoodsModel::where(['goods_id'=>$goods_id])->first();
         if(!$res){
