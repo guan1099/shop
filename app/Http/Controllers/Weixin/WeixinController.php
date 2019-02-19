@@ -65,7 +65,7 @@ class WeixinController extends Controller
             if($xml->EventKey=='kefu'){
 //                $data=$this->getUserInfo($openid);
 //                $nickname=$data['nickname'];
-                $this->kefu($openid,$xml->ToUserName);
+                $this->keFu($openid,$xml->ToUserName);
             }
         }
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
@@ -160,7 +160,7 @@ class WeixinController extends Controller
 
         }
     }
-    public function kefu($openid,$from,$nickname)
+    public function keFu($openid,$from)
     {
         // 文本消息
         $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. 'Hello , 现在时间'. date('Y-m-d H:i:s') .']]></Content></xml>';
