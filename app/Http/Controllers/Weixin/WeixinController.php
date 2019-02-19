@@ -115,18 +115,29 @@ class WeixinController extends Controller
                     "url"   => "https://www.baidu.com"
                 ],
                 [
-                    "type"  => "view",      // view类型 跳转指定 URL
-                    "name"  => "任务栏",
-                    "url"   => "https://www.baidu.com"
+                    "name"=>"菜单",
+                    "sub_button"=>[
+                       [
+                           "type"=>"view",
+                           "name"=>"搜索",
+                           "url"=>"http://www.soso.com/"
+                        ],
+                        [
+                           "type"=>"view",
+                            "name"=>"QQ音乐",
+                            "url"=>"http://www.qqmusic.com/"
+                        ]
+                    ],
+
                 ],
                 [
                     "type"  => "view",      // view类型 跳转指定 URL
-                    "name"  => "工具栏",
-                    "url"   => "https://www.baidu.com"
+                    "name"  => "我的项目",
+                    "url"   => "https://qi.tactshan.com"
                 ]
+
             ]
         ];
-
 
         $r=$client->request('POST', $url, [
             'body' => json_encode($data, JSON_UNESCAPED_UNICODE)
