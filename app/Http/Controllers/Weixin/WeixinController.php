@@ -32,11 +32,9 @@ class WeixinController extends Controller
 
         $event = $xml->Event;                       //事件类型
         //var_dump($xml);echo '<hr>';
-
+        $openid = $xml->FromUserName;               //用户openid
+        $sub_time = $xml->CreateTime;               //扫码关注时间
         if($event=='subscribe'){
-            $openid = $xml->FromUserName;               //用户openid
-            $sub_time = $xml->CreateTime;               //扫码关注时间
-
 
             echo 'openid: '.$openid;echo '</br>';
             echo '$sub_time: ' . $sub_time;
@@ -62,6 +60,12 @@ class WeixinController extends Controller
 
                 $id = WeixinUser::insertGetId($user_data);      //保存用户信息
                 var_dump($id);
+            }
+        }else if($event=='click'){
+            if($xml->EventKey=='kefu'){
+//                $data=$this->getUserInfo($openid);
+//                $nickname=$data['nickname'];
+                $this->kefu($openid,$xml->ToUserName);
             }
         }
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
@@ -110,9 +114,9 @@ class WeixinController extends Controller
         $data = [
             "button"    => [
                 [
-                    "type"  => "view",      // view类型 跳转指定 URL
-                    "name"  => "菜单栏",
-                    "url"   => "https://www.baidu.com"
+                    "type"  => "click",      // view类型 跳转指定 URL
+                    "name"  => "客服",
+                    "key"   => "kefu"
                 ],
                 [
                     "name"=>"菜单",
@@ -155,5 +159,11 @@ class WeixinController extends Controller
             echo $response_arr['errmsg'];
 
         }
+    }
+    public function kefu($openid,$from,$nickname)
+    {
+        // 文本消息
+        $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$from.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. 'Hello , 现在时间'. date('Y-m-d H:i:s') .']]></Content></xml>';
+        echo $xml_response;
     }
 }
