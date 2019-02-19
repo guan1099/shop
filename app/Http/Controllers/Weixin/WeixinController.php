@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Weixin;
 
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use App\Model\WeixinUser;
+use GuzzleHttp;
+
 class WeixinController extends Controller
 {
     protected $redis_weixin_access_token = 'str:weixin_access_token';     //微信 access_token
@@ -98,5 +101,48 @@ class WeixinController extends Controller
         $data = json_decode(file_get_contents($url),true);
         //echo '<pre>';print_r($data);echo '</pre>';
         return $data;
+    }
+    public function createMenu(){
+        //获取token 拼接接口
+        $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->getWXAccessToken();
+        //2 请求微信接口
+        $client = new GuzzleHttp\Client(['base_uri' => $url]);
+        $data = [
+            "button"    => [
+                [
+                    "type"  => "view",      // view类型 跳转指定 URL
+                    "name"  => "菜单栏",
+                    "url"   => "https://www.baidu.com"
+                ],
+                [
+                    "type"  => "view",      // view类型 跳转指定 URL
+                    "name"  => "任务栏",
+                    "url"   => "https://www.baidu.com"
+                ],
+                [
+                    "type"  => "view",      // view类型 跳转指定 URL
+                    "name"  => "工具栏",
+                    "url"   => "https://www.baidu.com"
+                ]
+            ]
+        ];
+
+
+        $r=$client->request('POST', $url, [
+            'body' => json_encode($data, JSON_UNESCAPED_UNICODE)
+        ]);
+
+        // 3 解析微信接口返回信息
+
+        $response_arr = json_decode($r->getBody(),true);
+        //echo '<pre>';print_r($response_arr);echo '</pre>';
+
+        if($response_arr['errcode'] == 0){
+            echo "菜单创建成功";
+        }else{
+            echo "菜单创建失败，请重试";echo '</br>';
+            echo $response_arr['errmsg'];
+
+        }
     }
 }
