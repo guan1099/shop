@@ -52,6 +52,8 @@ class WeixinController extends Controller
                 }
             }elseif($xml->MsgType=='voice'){
                 $this->dlVoice($xml->MediaId);
+                $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. str_random(10) . ' >>> ' . date('Y-m-d H:i:s') .']]></Content></xml>';
+                echo $xml_response;
             }elseif($xml->MsgType=='event') {
                 if ($event == 'subscribe') {
 
@@ -103,6 +105,8 @@ class WeixinController extends Controller
 
         $client = new GuzzleHttp\Client();
         $response = $client->get($url);
+        $h = $response->getHeaders();
+        //print_r($h);die;
         //获取文件名
         $file_info = $response->getHeader('Content-disposition');
         $file_name = substr(rtrim($file_info[0],'"'),-20);
@@ -125,6 +129,7 @@ class WeixinController extends Controller
         $client = new GuzzleHttp\Client();
         $response = $client->get($url);
         $h = $response->getHeaders();
+        echo $h;die;
         //获取文件名
         $file_info = $response->getHeader('Content-disposition');
         $file_name = substr(rtrim($file_info[0],'"'),-20);
