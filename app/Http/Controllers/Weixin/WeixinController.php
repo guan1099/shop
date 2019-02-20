@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use App\Model\WeixinUser;
 use GuzzleHttp;
-
+use Illuminate\Support\Facades\Storage;
 class WeixinController extends Controller
 {
     protected $redis_weixin_access_token = 'str:weixin_access_token';     //微信 access_token
@@ -51,7 +51,7 @@ class WeixinController extends Controller
                     echo $xml_response;
                 }
             }
-            exit();
+            //exit();
         }
 
         if($event=='subscribe'){
