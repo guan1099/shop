@@ -207,8 +207,8 @@ class WeixinController extends Controller
                 ],
                 [
                     "type"  => "view",      // view类型 跳转指定 URL
-                    "name"  => "我的项目",
-                    "url"   => "https://qi.tactshan.com"
+                    "name"  => "My name",
+                    "url"   => "https://qi.tactshan.com/weixin/textgroup"
                 ]
 
             ]
@@ -252,7 +252,7 @@ class WeixinController extends Controller
                 'tag_id'=>2  //is_to_all为true可不填写
             ],
             'text'=>[
-                'content'=>'撒由那拉  欢迎大家'
+                'content'=>'大家好，我叫管子琦'
             ],
             'msgtype'=>'text'
         ];
@@ -266,6 +266,8 @@ class WeixinController extends Controller
             echo "群发失败，请重试";
             echo "<br/>";
         }
+
+
     }
 
 }
