@@ -128,8 +128,8 @@ class WeixinController extends Controller
         //保存图片
         $client = new GuzzleHttp\Client();
         $response = $client->get($url);
-        $h = $response->getHeaders();
-        echo $h;die;
+        //$h = $response->getHeaders();
+
         //获取文件名
         $file_info = $response->getHeader('Content-disposition');
         $file_name = substr(rtrim($file_info[0],'"'),-20);
