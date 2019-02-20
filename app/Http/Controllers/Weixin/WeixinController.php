@@ -252,7 +252,7 @@ class WeixinController extends Controller
                 'tag_id'=>2  //is_to_all为true可不填写
             ],
             'text'=>[
-                'content'=>'大家好，我叫管子琦'
+                'content'=>'你好！'
             ],
             'msgtype'=>'text'
         ];
