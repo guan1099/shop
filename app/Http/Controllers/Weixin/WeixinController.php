@@ -266,8 +266,6 @@ class WeixinController extends Controller
             echo "群发失败，请重试";
             echo "<br/>";
         }
-
-
     }
 
 }
