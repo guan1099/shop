@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use App\Model\WeixinUser;
+use App\Model\WeixinMedia;
 use GuzzleHttp;
 use Illuminate\Support\Facades\Storage;
 class WeixinController extends Controller
@@ -46,10 +47,22 @@ class WeixinController extends Controller
             }elseif($xml->MsgType=='image'){       //用户发送图片信息
                 //视业务需求是否需要下载保存图片
                 if(1){  //下载图片素材
-                    $this->dlWxImg($xml->MediaId);
+                    $file_name=$this->dlWxImg($xml->MediaId);
                     $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. str_random(10) . ' >>> ' . date('Y-m-d H:i:s') .']]></Content></xml>';
                     echo $xml_response;
                 }
+                $data = [
+                    'openid'    => $openid,
+                    'add_time'  => time(),
+                    'msg_type'  => 'image',
+                    'media_id'  => $xml->MediaId,
+                    'format'    => $xml->Format,
+                    'msg_id'    => $xml->MsgId,
+                    'local_file_name'   => $file_name
+                ];
+
+                $m_id = WeixinMedia::insertGetId($data);
+                echo $m_id;
                 exit;
             }elseif($xml->MsgType=='voice'){
                 $this->dlVoice($xml->MediaId);
@@ -140,7 +153,7 @@ class WeixinController extends Controller
         }else{      //保存失败
             echo 2;
         }
-
+        return $file_name;
     }
     /**
      * 获取微信AccessToken
