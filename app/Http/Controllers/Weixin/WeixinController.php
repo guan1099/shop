@@ -50,19 +50,20 @@ class WeixinController extends Controller
                     $file_name=$this->dlWxImg($xml->MediaId);
                     $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. str_random(10) . ' >>> ' . date('Y-m-d H:i:s') .']]></Content></xml>';
                     echo $xml_response;
-                }
-                $data = [
-                    'openid'    => $openid,
-                    'add_time'  => time(),
-                    'msg_type'  => 'image',
-                    'media_id'  => $xml->MediaId,
-                    'format'    => $xml->Format,
-                    'msg_id'    => $xml->MsgId,
-                    'local_file_name'   => $file_name
-                ];
+                    $data = [
+                        'openid'    => $openid,
+                        'add_time'  => time(),
+                        'msg_type'  => 'image',
+                        'media_id'  => $xml->MediaId,
+                        'format'    => $xml->Format,
+                        'msg_id'    => $xml->MsgId,
+                        'local_file_name'   => $file_name
+                    ];
 
-                $m_id = WeixinMedia::insertGetId($data);
-                echo $m_id;
+                    $m_id = WeixinMedia::insertGetId($data);
+                    echo $m_id;
+                }
+
                 exit;
             }elseif($xml->MsgType=='voice'){
                 $this->dlVoice($xml->MediaId);
