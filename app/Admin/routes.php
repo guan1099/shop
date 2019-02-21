@@ -15,4 +15,8 @@ Route::group([
     $router->resource('/goods',GoodsController::class);
     $router->resource('/wxuser',WeixinController::class);
     $router->resource('/media',WeixinmediaController::class);
+    $router->resource('/material',WeixinmaterialController::class);
+
+
+    $router->post('/material','WeixinmaterialController@material');
 });

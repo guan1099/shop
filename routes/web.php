@@ -89,3 +89,7 @@ Route::post('/weixin/valid1','Weixin\WeixinController@wxEvent');        //接收
 Route::get('/weixin/createmenu','Weixin\WeixinController@createMenu');
 Route::get('/weixin/refresh_token','Weixin\WeixinController@refreshToken'); //刷新token值
 Route::get('/weixin/textgroup','Weixin\WeixinController@textGroup');
+Route::get('/weixin/textmaterial','Weixin\WeixinController@textMaterial');
+
+Route::get('/weixin/form','Weixin\WeixinController@form');
+Route::post('/weixin/form','Weixin\WeixinController@material');

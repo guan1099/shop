@@ -48,6 +48,7 @@ class WeixinController extends Controller
                 //视业务需求是否需要下载保存图片
                 if(1){  //下载图片素材
                     $file_name=$this->dlWxImg($xml->MediaId);
+                    $this->material($xml->MediaId);
                     $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. str_random(10) . ' >>> ' . date('Y-m-d H:i:s') .']]></Content></xml>';
                     echo $xml_response;
                     $data = [
@@ -307,6 +308,7 @@ class WeixinController extends Controller
         Redis::del($this->redis_weixin_access_token);
         echo $this->getWXAccessToken();
     }
+    //群发
     public function textGroup(){
         $url='https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token='.$this->getWXAccessToken();
         //请求微信接口
@@ -331,8 +333,69 @@ class WeixinController extends Controller
             echo "群发失败，请重试";
             echo "<br/>";
         }
+    }
+    //文件素材列表
+    public function textMaterial(){
+        $url='https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token='.$this->getWXAccessToken();
+        $client=new GuzzleHttp\Client(['base_uri' => $url]);
+        $data=[
+            "type"=>'image',
+            "offset"=>0,
+            "count"=>10
+        ];
+        $r=$client->request('post',$url,['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        //解析接口返回信息
+        $response_arr=json_decode($r->getBody(),true);
+        var_dump($response_arr);
+    }
+    //添加永久 素材
+    public function form(){
+        return view('form.material');
+    }
+    public function material(Request $request)
+    {
+        //保存文件
+        $img_file = $request->file('media');
+        //echo '<pre>';print_r($img_file);echo '</pre>';echo '<hr>';
+
+        $img_origin_name = $img_file->getClientOriginalName();
+        echo 'originName: '.$img_origin_name;echo '</br>';
+        $file_ext = $img_file->getClientOriginalExtension();          //获取文件扩展名
+        echo 'ext: '.$file_ext;echo '</br>';
+
+        //重命名
+        $new_file_name = str_random(15). '.'.$file_ext;
+        echo 'new_file_name: '.$new_file_name;echo '</br>';
+
+        //文件保存路径
+
+
+        //保存文件
+        $save_file_path = $request->media->storeAs('material',$new_file_name);       //返回保存成功之后的文件路径
+
+        echo 'save_file_path: '.$save_file_path;echo '<hr>';
+
+        //上传至微信永久素材
+        $this->upMaterialTest($save_file_path);
+    }
+    public function upMaterialTest($file_path)
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$this->getWXAccessToken().'&type=image';
+        $client = new GuzzleHttp\Client();
+        $response = $client->request('POST',$url,[
+            'multipart' => [
+                [
+                    'name'     => 'media',
+                    'contents' => fopen($file_path, 'r')
+                ],
+            ]
+        ]);
+
+        $body = $response->getBody();
+        echo $body;echo '<hr>';
+        $d = json_decode($body,true);
+        echo '<pre>';print_r($d);echo '</pre>';
 
 
     }
-
 }

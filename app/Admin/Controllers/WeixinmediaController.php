@@ -141,4 +141,5 @@ class WeixinmediaController extends Controller
 
         return $form;
     }
+
 }
