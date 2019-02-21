@@ -66,9 +66,37 @@ class WeixinController extends Controller
 
                 exit;
             }elseif($xml->MsgType=='voice'){
-                $this->dlVoice($xml->MediaId);
+                $file_name=$this->dlVoice($xml->MediaId);
                 $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. str_random(10) . ' >>> ' . date('Y-m-d H:i:s') .']]></Content></xml>';
                 echo $xml_response;
+                $data = [
+                    'openid'    => $openid,
+                    'add_time'  => time(),
+                    'msg_type'  => 'voice',
+                    'media_id'  => $xml->MediaId,
+                    'format'    => $xml->Format,
+                    'msg_id'    => $xml->MsgId,
+                    'local_file_name'   => $file_name
+                ];
+
+                $m_id = WeixinMedia::insertGetId($data);
+                echo $m_id;
+            }elseif($xml->MsgType=='video'){
+                $file_name=$this->dlVideo($xml->MediaId);
+                $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. str_random(10) . ' >>> ' . date('Y-m-d H:i:s') .']]></Content></xml>';
+                echo $xml_response;
+                $data = [
+                    'openid'    => $openid,
+                    'add_time'  => time(),
+                    'msg_type'  => 'video',
+                    'media_id'  => $xml->MediaId,
+                    'format'    => $xml->Format,
+                    'msg_id'    => $xml->MsgId,
+                    'local_file_name'   => $file_name
+                ];
+
+                $m_id = WeixinMedia::insertGetId($data);
+                echo $m_id;
             }elseif($xml->MsgType=='event') {
                 if ($event == 'subscribe') {
 
@@ -132,6 +160,29 @@ class WeixinController extends Controller
         }else{      //保存失败
             echo 2;
         }
+        return $file_name;
+    }
+    public function dlVideo($media_id)
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$this->getWXAccessToken().'&media_id='.$media_id;
+
+        $client = new GuzzleHttp\Client();
+        $response = $client->get($url);
+        $h = $response->getHeaders();
+        //print_r($h);die;
+        //获取文件名
+        $file_info = $response->getHeader('Content-disposition');
+        $file_name = substr(rtrim($file_info[0],'"'),-20);
+
+        $wx_image_path = 'wx/video/'.$file_name;
+        //保存视频
+        $r = Storage::disk('local')->put($wx_image_path,$response->getBody());
+        if($r){     //保存成功
+            echo 1;
+        }else{      //保存失败
+            echo 2;
+        }
+        return $file_name;
     }
     public function dlWxImg($media_id)
     {

@@ -354,4 +354,32 @@
 <MsgId>22200144466415692</MsgId>
 <MediaId><![CDATA[0WgEUFUj6nR4p3cFrIbz2o4cbEAGg4t9hZZpRvyPvUFGQmkxMxztB5e4daAZFHX3]]></MediaId>
 </xml>
+<<<<<<<2019-02-21 10:56:23
+<xml><ToUserName><![CDATA[gh_63a6c8c6aa21]]></ToUserName>
+<FromUserName><![CDATA[oLJ3L5jgSkfPv76iVA-DeKo2rPEc]]></FromUserName>
+<CreateTime>1550717683</CreateTime>
+<MsgType><![CDATA[voice]]></MsgType>
+<MediaId><![CDATA[65FskyX8F-pE40mJrEoyorBZEuMqeAVS8Xv1AVTdWw_q8jQf6TKqvXxcZO0L_P6f]]></MediaId>
+<Format><![CDATA[amr]]></Format>
+<MsgId>22200938671483864</MsgId>
+<Recognition><![CDATA[]]></Recognition>
+</xml>
+<<<<<<<2019-02-21 11:07:10
+<xml><ToUserName><![CDATA[gh_63a6c8c6aa21]]></ToUserName>
+<FromUserName><![CDATA[oLJ3L5jgSkfPv76iVA-DeKo2rPEc]]></FromUserName>
+<CreateTime>1550718281</CreateTime>
+<MsgType><![CDATA[video]]></MsgType>
+<MediaId><![CDATA[cS85vUO08glrNNAB48Vk_m2w9W4OeY9TfB9dlKxrMJwQra44qlbF-Jhjdkp8ap3J]]></MediaId>
+<ThumbMediaId><![CDATA[Zw8Ksriqi506614sT5GSgPSK3uR--I6OlE1uL5-PfEmmc13aNhfUXbl-UYQ4tBBR]]></ThumbMediaId>
+<MsgId>22200945539733873</MsgId>
+</xml>
+<<<<<<<2019-02-21 11:07:47
+<xml><ToUserName><![CDATA[gh_63a6c8c6aa21]]></ToUserName>
+<FromUserName><![CDATA[oLJ3L5jgSkfPv76iVA-DeKo2rPEc]]></FromUserName>
+<CreateTime>1550718281</CreateTime>
+<MsgType><![CDATA[video]]></MsgType>
+<MediaId><![CDATA[cS85vUO08glrNNAB48Vk_m2w9W4OeY9TfB9dlKxrMJwQra44qlbF-Jhjdkp8ap3J]]></MediaId>
+<ThumbMediaId><![CDATA[Zw8Ksriqi506614sT5GSgPSK3uR--I6OlE1uL5-PfEmmc13aNhfUXbl-UYQ4tBBR]]></ThumbMediaId>
+<MsgId>22200945539733873</MsgId>
+</xml>
 <<<<<<<
