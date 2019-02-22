@@ -60,7 +60,6 @@ class WeixinController extends Controller
                         'msg_id'    => $xml->MsgId,
                         'local_file_name'   => $file_name
                     ];
-
                     $m_id = WeixinMedia::insertGetId($data);
                     echo $m_id;
                 }
@@ -356,27 +355,30 @@ class WeixinController extends Controller
     {
         //保存文件
         $img_file = $request->file('media');
-        //echo '<pre>';print_r($img_file);echo '</pre>';echo '<hr>';
+        if(!empty($img_file)){
+            //echo '<pre>';print_r($img_file);echo '</pre>';echo '<hr>';
 
-        $img_origin_name = $img_file->getClientOriginalName();
-        echo 'originName: '.$img_origin_name;echo '</br>';
-        $file_ext = $img_file->getClientOriginalExtension();          //获取文件扩展名
-        echo 'ext: '.$file_ext;echo '</br>';
+            $img_origin_name = $img_file->getClientOriginalName();
+            echo 'originName: '.$img_origin_name;echo '</br>';
+            $file_ext = $img_file->getClientOriginalExtension();          //获取文件扩展名
+            echo 'ext: '.$file_ext;echo '</br>';
 
-        //重命名
-        $new_file_name = str_random(15). '.'.$file_ext;
-        echo 'new_file_name: '.$new_file_name;echo '</br>';
+            //重命名
+            $new_file_name = str_random(15). '.'.$file_ext;
+            echo 'new_file_name: '.$new_file_name;echo '</br>';
 
-        //文件保存路径
+            //文件保存路径
 
 
-        //保存文件
-        $save_file_path = $request->media->storeAs('material',$new_file_name);       //返回保存成功之后的文件路径
+            //保存文件
+            $save_file_path = $request->media->storeAs('material',$new_file_name);       //返回保存成功之后的文件路径
 
-        echo 'save_file_path: '.$save_file_path;echo '<hr>';
+            echo 'save_file_path: '.$save_file_path;echo '<hr>';
 
-        //上传至微信永久素材
-        $this->upMaterialTest($save_file_path);
+            //上传至微信永久素材
+            $this->upMaterialTest($save_file_path);
+        }
+
     }
     public function upMaterialTest($file_path)
     {
