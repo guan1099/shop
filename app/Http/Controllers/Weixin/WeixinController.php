@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Weixin;
 
 
+use App\Model\WeixinMaterial;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
@@ -44,6 +45,16 @@ class WeixinController extends Controller
                 $msg = $xml->Content;
                 $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. $msg. date('Y-m-d H:i:s') .']]></Content></xml>';
                 echo $xml_response;
+                $data = [
+                    'openid'    => $openid,
+                    'add_time'  => time(),
+                    'msg_type'  => 'image',
+                    'media_id'  => $xml->MediaId,
+                    'format'    => $xml->Format,
+                    'msg_id'    => $xml->MsgId,
+                    'local_file_name'   => $msg
+                ];
+                $m_id = WeixinMedia::insertGetId($data);
             }elseif($xml->MsgType=='image'){       //用户发送图片信息
                 //视业务需求是否需要下载保存图片
                 if(1){  //下载图片素材
@@ -398,5 +409,35 @@ class WeixinController extends Controller
         echo '<pre>';print_r($d);echo '</pre>';
 
 
+    }
+    public function send()
+    {
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$this->getWXAccessToken();
+        $client=new GuzzleHttp\Client(['base_uri' => $url]);
+        $data=[
+            "touser"=>"oLJ3L5jgSkfPv76iVA-DeKo2rPEc",
+            "msgtype"=>"text",
+            "text"=>
+                [
+                    "content"=>"Hello World"
+                ]
+        ];
+        $r=$client->request('post',$url,['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        //解析接口返回信息
+        $response_arr=json_decode($r->getBody(),true);
+        var_dump($response_arr);
+        if($response_arr['errcode']==0){
+            echo "发送成功";
+        }else{
+            echo "发送失败，请重试";
+            echo "<br/>";
+        }
+    }
+    public function keLiao(){
+        $arr=WeixinUser::where(['openid'=>'oLJ3L5jgSkfPv76iVA-DeKo2rPEc'])->first()->toArray();
+            $data=[
+                'list'=>$arr
+            ];
+            return view('kefu.keliao',$data);
     }
 }

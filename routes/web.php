@@ -93,3 +93,7 @@ Route::get('/weixin/textmaterial','Weixin\WeixinController@textMaterial');
 
 Route::get('/weixin/form','Weixin\WeixinController@form');
 Route::post('/weixin/form','Weixin\WeixinController@material');
+
+
+Route::get('/weixin/send','Weixin\WeixinController@send');
+Route::get('/weixin/kefu','Weixin\WeixinController@keLiao');

@@ -86,9 +86,10 @@ class WeixinmaterialController extends Controller
 
         $grid->id('Id');
         $grid->media('Media id');
-        $grid->media_url('Media url');
+        $grid->media_url('Media url')->display(function($i){
+            return "<img src=".$i.">";
+        });
         $grid->add_name('Add name');
-
         return $grid;
     }
 

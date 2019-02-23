@@ -57,7 +57,6 @@ class WeixinController extends Controller
             ->description('description')
             ->body($this->form()->edit($id));
     }
-
     /**
      * Create interface.
      *
@@ -92,7 +91,6 @@ class WeixinController extends Controller
             return '<img src="'.$url.'">';
         });
         $grid->subscribe_time('Subscribe time');
-
         return $grid;
     }
 
