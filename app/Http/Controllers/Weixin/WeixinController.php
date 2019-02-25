@@ -43,12 +43,10 @@ class WeixinController extends Controller
         if(isset($xml->MsgType)){
             if($xml->MsgType=='text'){            //用户发送文本消息
                 $msg = $xml->Content;
-                $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. $msg. date('Y-m-d H:i:s') .']]></Content></xml>';
-                echo $xml_response;
                 $data = [
                     'openid'    => $openid,
                     'add_time'  => time(),
-                    'msg_type'  => 'image',
+                    'msg_type'  => 'text',
                     'media_id'  => $xml->MediaId,
                     'format'    => $xml->Format,
                     'msg_id'    => $xml->MsgId,
@@ -435,9 +433,53 @@ class WeixinController extends Controller
     }
     public function keLiao(){
         $arr=WeixinUser::where(['openid'=>'oLJ3L5jgSkfPv76iVA-DeKo2rPEc'])->first()->toArray();
+        $arr1=WeixinMedia::where(['openid'=>'oLJ3L5jgSkfPv76iVA-DeKo2rPEc'])->OrderBy('add_time','des')->first()->toArray();
             $data=[
-                'list'=>$arr
+                'list'=>$arr,
+                'list1'=>$arr1
             ];
             return view('kefu.keliao',$data);
+    }
+    public function keliaodo(){
+        $openid=$_GET['openid'];
+        $pos=$_GET['pos'];
+        $msg=WeixinMedia::where(['openid'=>$openid])->where('id','>',$pos)->where(['msg_type'=>'text'])->OrderBy('add_time','des')->first();
+        if($msg){
+            $response = [
+                'errno' => 0,
+                'data'  => $msg->toArray()
+            ];
+
+        }else{
+            $response = [
+                'errno' => 50001,
+                'msg'   => '服务器异常，请联系管理员'
+            ];
+        }
+
+        die( json_encode($response));
+    }
+    public function text(){
+        $text=$_GET['send_msg'];
+        $openid=$_GET['openid'];
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$this->getWXAccessToken();
+        $client=new GuzzleHttp\Client(['base_uri' => $url]);
+        $data=[
+            "touser"=>$openid,
+            "msgtype"=>"text",
+            "text"=>
+                [
+                    "content"=>$text
+                ]
+        ];
+        $r=$client->request('post',$url,['body'=>json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        //解析接口返回信息
+        $response_arr=json_decode($r->getBody(),true);
+        var_dump($response_arr);
+        if($response_arr['errcode']==0){
+            echo "发送成功";
+        }else{
+            echo "发送失败，请重试";
+        }
     }
 }

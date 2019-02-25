@@ -91,6 +91,9 @@ class WeixinController extends Controller
             return '<img src="'.$url.'">';
         });
         $grid->subscribe_time('Subscribe time');
+        $grid->actions(function ($actions) {
+            $actions->append('<a href="/admin/wxuser/information/"><i>发送信息</i></a>');
+        });
         return $grid;
     }
 
