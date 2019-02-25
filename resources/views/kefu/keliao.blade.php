@@ -1,5 +1,5 @@
 
-    <div style="width:800px;height:500px;border:solid 1px black;margin: 0 auto" align="center" id="chat_div">
+    <div style="width:800px;height:500px;border:solid 1px black;margin: 0 auto;overflow:scroll;" align="center" id="chat_div">
         <tr>
             <td>{{$list['nickname']}}</td>
             <td><img src="{{$list['headimgurl']}}" alt=""></td>
