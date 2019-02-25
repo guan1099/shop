@@ -1,5 +1,4 @@
-@extends('layouts.bst')
-@section('content')
+
     <div style="width:800px;height:500px;border:solid 1px black;margin: 0 auto" align="center" id="chat_div">
         <tr>
             <td>{{$list['nickname']}}</td>
@@ -14,9 +13,8 @@
             <input type="button" value="发送" class="btn btn-default" id="btn">
         </div>
     </form>
-@endsection
-@section('footer')
-    @parent
+
+
     <script>
         var openid=$('#hidden').val();
         setInterval(function(){
@@ -59,4 +57,4 @@
             });
         });
     </script>
-@endsection
+

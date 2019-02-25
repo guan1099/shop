@@ -409,8 +409,9 @@ class WeixinController extends Controller
 
     }
     public function keLiao(){
-        $arr=WeixinUser::where(['openid'=>'oLJ3L5jgSkfPv76iVA-DeKo2rPEc'])->first()->toArray();
-        $arr1=WeixinMedia::where(['openid'=>'oLJ3L5jgSkfPv76iVA-DeKo2rPEc'])->OrderBy('add_time','des')->first()->toArray();
+        $openid=$_GET['openid'];
+        $arr=WeixinUser::where(['openid'=>$openid])->first()->toArray();
+        $arr1=WeixinMedia::where(['openid'=>'$openid'])->OrderBy('add_time','des')->first()->toArray();
             $data=[
                 'list'=>$arr,
                 'list1'=>$arr1

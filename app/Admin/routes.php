@@ -16,7 +16,7 @@ Route::group([
     $router->resource('/wxuser',WeixinController::class);
     $router->resource('/media',WeixinmediaController::class);
     $router->resource('/material',WeixinmaterialController::class);
-
+    $router->get('/chat','WeixinController@chat');
 
     $router->post('/material','WeixinmaterialController@material');
 });

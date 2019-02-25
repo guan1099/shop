@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Model\WeixinUser;
+use App\Model\WeixinMedia;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -81,7 +82,9 @@ class WeixinController extends Controller
         $grid = new Grid(new WeixinUser);
 
         $grid->id('Id');
-        $grid->openid('Openid');
+        $openid=$grid->openid('Openid')->display(function($openid){
+            return '<a href="/admin/chat?openid='.$openid.'">'.$openid.'</a>';
+        });
         $grid->add_time('Add time')->display(function($time){
             return date("Y-m-d H:i:s",$time);
         });
@@ -92,11 +95,24 @@ class WeixinController extends Controller
         });
         $grid->subscribe_time('Subscribe time');
         $grid->actions(function ($actions) {
-            $actions->append('<a href="/admin/wxuser/information/"><i>发送信息</i></a>');
+            $actions->append('<a href="/"><i>发送信息</i></a>');
         });
         return $grid;
     }
-
+    public function chat(Content $content)
+    {
+        $openid=$_GET['openid'];
+        $arr=WeixinUser::where(['openid'=>$openid])->first()->toArray();
+        $arr1=WeixinMedia::where(['openid'=>$openid])->OrderBy('add_time','des')->first();
+        $data=[
+            'list'=>$arr,
+            'list1'=>$arr1
+        ];
+        return $content
+            ->header('私聊')
+            ->description('description')
+            ->body(view('kefu.keliao',$data));
+    }
     /**
      * Make a show builder.
      *
