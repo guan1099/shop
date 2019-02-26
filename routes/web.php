@@ -100,3 +100,4 @@ Route::get('/weixin/kefudo','Weixin\WeixinController@keLiaodo');
 Route::get('/weixin/text','Weixin\WeixinController@text');
 
 Route::get('/weixin/pay/test','Weixin\PayController@test');   //支付测试
+Route::post('/weixin/pay/notice','Weixin\PayController@notice');     //微信支付通知回调
