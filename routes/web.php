@@ -98,3 +98,5 @@ Route::post('/weixin/form','Weixin\WeixinController@material');
 Route::get('/weixin/kefu','Weixin\WeixinController@keLiao');
 Route::get('/weixin/kefudo','Weixin\WeixinController@keLiaodo');
 Route::get('/weixin/text','Weixin\WeixinController@text');
+
+Route::get('/weixin/pay/test','Weixin\PayController@test');   //支付测试
