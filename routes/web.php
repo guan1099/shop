@@ -100,7 +100,7 @@ Route::get('/weixin/kefudo','Weixin\WeixinController@keLiaodo');
 Route::get('/weixin/text','Weixin\WeixinController@text');
 
 
-Route::get('/weixin/pay/totest/{order_id}','Weixin\PayController@totest');
+Route::get('/weixin/pay/totest/{order_id}/{order_number}','Weixin\PayController@totest');
 Route::get('/weixin/pay/pay','Weixin\PayController@pay');
 Route::get('/weixin/pay/order','Weixin\PayController@order');
 Route::get('/weixin/pay/test/{order_id}','Weixin\PayController@test');   //支付测试
