@@ -165,11 +165,11 @@ class PayController extends Controller
                 //TODO 逻辑处理  订单状态更新
                 $res=$this->model($xml);
                 if($res){
-                    $log_str .= " Sign Failed!<<<<< \n\n";
-                    file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
-                }else{
                     $log_str .= " Sign OK!<<<<< \n\n";
-                    file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+                    file_put_contents('logs/wx_pay_notice.log',$log_str,FILE_APPEND);
+                }else{
+                    $log_str .= " Sign FAILED!<<<<< \n\n";
+                    file_put_contents('logs/wx_pay_notice.log',$log_str,FILE_APPEND);
                 }
             }else{
                 //TODO 验签失败
@@ -188,10 +188,10 @@ class PayController extends Controller
         $this->values=[];
         $this->values=$xml;
         $sign=$this->SetSign();
-        if($sign!=$xml['sign']){
-            return false;
-        }else{
+        if($sign==$xml['sign']){
             return true;
+        }else{
+            return false;
         }
     }
 
@@ -225,7 +225,7 @@ class PayController extends Controller
     }
     public function order(){
         $number=$_GET['number'];
-        $res=OrderModel::where(['order_number'=>$number])->first();
+        $res=OrderModel::where(['order_number'=>$number])->first()->toArray();
         if($res['order_status']==3){
             echo 1;
         }
