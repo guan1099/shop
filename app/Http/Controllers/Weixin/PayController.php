@@ -49,7 +49,7 @@ class PayController extends Controller
         $code_url=$data->code_url;
         $number=$data->out_trade_no;
         $code_url=base64_encode($code_url);
-        header('refresh:0;url=/weixin/pay/totest/'.$code_url.'/'.$number.'');
+        header('refresh:0;url=/weixin/pay/totest/'.$code_url.''.$number.'');
 
     }
     public function totest($data,$number){
