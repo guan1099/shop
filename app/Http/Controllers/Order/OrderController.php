@@ -108,7 +108,8 @@ class OrderController extends Controller
         $data=[
             'title'=>'详情',
             'list'=>$res,
-            'order_id'=>$order_id
+            'order_id'=>$order_id,
+            'order_number'=>$order_number
         ];
         return view('order.orderdetail',$data);
     }

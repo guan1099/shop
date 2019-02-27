@@ -99,5 +99,9 @@ Route::get('/weixin/kefu','Weixin\WeixinController@keLiao');
 Route::get('/weixin/kefudo','Weixin\WeixinController@keLiaodo');
 Route::get('/weixin/text','Weixin\WeixinController@text');
 
-Route::get('/weixin/pay/test','Weixin\PayController@test');   //支付测试
+
+Route::get('/weixin/pay/totest/{order_id}','Weixin\PayController@totest');
+Route::get('/weixin/pay/pay','Weixin\PayController@pay');
+Route::get('/weixin/pay/order/{order_id}','Weixin\PayController@order');
+Route::get('/weixin/pay/test/{order_id}','Weixin\PayController@test');   //支付测试
 Route::post('/weixin/pay/notice','Weixin\PayController@notice');     //微信支付通知回调

@@ -10,12 +10,19 @@ class PayController extends Controller
     //
     public $weixin_unifiedorder_url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
     public $weixin_notify_url = 'http://qi.tactshan.com/weixin/pay/notice';     //支付通知回调
-    public function test()
+    public function test($order_id)
     {
-        //
+        if(empty($order_id)){
+            die('订单不存在');
+        }
+        $data= OrderModel::where(['order_number'=>$order_id])->first();
+        if(empty($data)){
+            die('订单不存在2');
+        }
+        if($data->order_status==2){
+            die('订单已取消');
+        }
         $total_fee = 1;         //用户要支付的总金额
-        $order_id = OrderModel::generateOrderSN();
-
         $order_info = [
             'appid' => env('WEIXIN_APPID_0'),      //微信支付绑定的服务号的APPID
             'mch_id' => env('WEIXIN_MCH_ID'),       // 商户ID
@@ -34,10 +41,10 @@ class PayController extends Controller
         $this->values = $order_info;
         $this->SetSign();
         $xml = $this->ToXml();      //将数组转换为XML
-        $rs = $this->postXmlCurl($xml, $this->weixin_unifiedorder_url, $useCert = false, $second = 30);
 
+        $rs = $this->postXmlCurl($xml, $this->weixin_unifiedorder_url, $useCert = false, $second = 30);
         $data =  simplexml_load_string($rs);
-//        //var_dump($data);echo '<hr>';
+        //var_dump($data);echo '<hr>';
 //        echo 'return_code: '.$data->return_code;echo '<br>';
 //		echo 'return_msg: '.$data->return_msg;echo '<br>';
 //		echo 'appid: '.$data->appid;echo '<br>';
@@ -46,13 +53,23 @@ class PayController extends Controller
 //		echo 'sign: '.$data->sign;echo '<br>';
 //		echo 'result_code: '.$data->result_code;echo '<br>';
 //		echo 'prepay_id: '.$data->prepay_id;echo '<br>';
-//		echo 'trade_type: '.$data->trade_type;echo '<br>';
-        echo 'code_url: '.$data->code_url;echo '<br>';
+//		echo 'trade_type: '.$data->trade_type;echo '<br>'
+//      echo 'code_url: '.$data->code_url;echo '<br>';die;
 //        die;
         //echo '<pre>';print_r($data);echo '</pre>';
 
         //将 code_url 返回给前端，前端生成 支付二维码
+        $code_url=$data->code_url;
+        $code_url=base64_encode($code_url);
+        header('refresh:0;url=/weixin/pay/totest/'.$code_url.'');
 
+    }
+    public function totest($data){
+        $code_url=base64_decode($data);
+        $arr=[
+            'list'=>$code_url
+        ];
+        return view('order.code',$arr);
     }
     protected function ToXml()
     {
@@ -98,6 +115,7 @@ class PayController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
         //运行curl
         $data = curl_exec($ch);
+        //print_r($data);die;
         //返回结果
         if($data){
             curl_close($ch);
@@ -150,16 +168,17 @@ class PayController extends Controller
         //记录日志
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_pay_notice.log',$log_str,FILE_APPEND);
-
-        $xml = simplexml_load_string($data);
-
-        if($xml->result_code=='SUCCESS' && $xml->return_code=='SUCCESS'){      //微信支付成功回调
+        $xml = (array)simplexml_load_string($data,'SimpleXMLElement',LIBXML_NOCDATA);
+        if($xml['result_code']=='SUCCESS' && $xml['return_code']=='SUCCESS'){      //微信支付成功回调
             //验证签名
-            $sign = true;
-
+            $sign=$this->tosign($xml);
             if($sign){       //签名验证成功
                 //TODO 逻辑处理  订单状态更新
-
+                $res=$this->model($xml);
+                if($res){
+                    $amount=$xml['out_trade_no'];
+                    header('refresh:1;url=/weixin/pay/order/'.$amount.'');
+                }
             }else{
                 //TODO 验签失败
                 echo '验签失败，IP: '.$_SERVER['REMOTE_ADDR'];
@@ -169,5 +188,59 @@ class PayController extends Controller
 
         $response = '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
         echo $response;
+    }
+    /**
+     * 验签
+     */
+    public function tosign($xml){
+        $this->values=[];
+        $this->values=$xml;
+        $sign=$this->SetSign();
+        if($sign!=$xml['sign']){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * 处理订单逻辑
+     */
+    public function model($xml){
+        $number=$xml['out_trade_no'];
+        $res=OrderModel::where(['order_number'=>$number])->first();
+        if(empty($res)){
+            die('订单为假');
+        }
+        if($res['order_amount']!=$xml['total_fee']){
+            die('订单金额不正确');
+        }
+        if($res['order_status']==3){
+            die('订单已取消');
+        }
+        if($res['order_status']==2){
+            die('订单已付款');
+        }
+        $data=[
+            'order_status'=>2,
+            'pay_time'=>time(),
+            'is_pay'=>2,
+            'pay_amount'=>$xml['total_fee']
+        ];
+        $res1=OrderModel::where(['order_number'=>$number])->update($data);
+        if($res1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function order($number){
+        $res=OrderModel::where(['order_number'=>$number])->first();
+        if($res['order_status']==2){
+            return 1;
+        }
+    }
+    public function pay(){
+        echo "支付成功";
     }
 }
