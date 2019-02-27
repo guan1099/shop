@@ -165,7 +165,11 @@ class PayController extends Controller
                 //TODO 逻辑处理  订单状态更新
                 $res=$this->model($xml);
                 if($res){
-
+                    $log_str .= " Sign Failed!<<<<< \n\n";
+                    file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+                }else{
+                    $log_str .= " Sign OK!<<<<< \n\n";
+                    file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
                 }
             }else{
                 //TODO 验签失败
@@ -200,14 +204,14 @@ class PayController extends Controller
         if(empty($res)){
             die('订单为假');
         }
-        if($res['order_status']==3){
+        if($res['order_status']==2){
             die('订单已取消');
         }
-        if($res['order_status']==2){
+        if($res['order_status']==3){
             die('订单已付款');
         }
         $data=[
-            'order_status'=>2,
+            'order_status'=>3,
             'pay_time'=>time(),
             'is_pay'=>2,
             'pay_amount'=>$xml['total_fee']
@@ -222,7 +226,7 @@ class PayController extends Controller
     public function order(){
         $number=$_GET['number'];
         $res=OrderModel::where(['order_number'=>$number])->first();
-        if($res['order_status']==2){
+        if($res['order_status']==3){
             echo 1;
         }
     }
