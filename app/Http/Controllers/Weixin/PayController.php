@@ -226,7 +226,7 @@ class PayController extends Controller
         $number=$_GET['number'];
         $res=OrderModel::where(['order_number'=>$number])->first();
         if($res['order_status']==2){
-            return 1;
+            echo 1;
         }
     }
     public function pay(){
