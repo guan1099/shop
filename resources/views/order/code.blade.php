@@ -27,7 +27,7 @@
                     }
                 }
             });
-        },5000);
+        },1000);
         var qrcode = new QRCode("qrcode");
 
         function makeCode () {

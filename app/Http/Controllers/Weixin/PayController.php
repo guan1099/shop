@@ -200,9 +200,6 @@ class PayController extends Controller
         if(empty($res)){
             die('订单为假');
         }
-        if($res['order_amount']!=$xml['total_fee']){
-            die('订单金额不正确');
-        }
         if($res['order_status']==3){
             die('订单已取消');
         }
