@@ -45,29 +45,18 @@ class PayController extends Controller
         $rs = $this->postXmlCurl($xml, $this->weixin_unifiedorder_url, $useCert = false, $second = 30);
         $data =  simplexml_load_string($rs);
         //var_dump($data);echo '<hr>';
-//        echo 'return_code: '.$data->return_code;echo '<br>';
-//		echo 'return_msg: '.$data->return_msg;echo '<br>';
-//		echo 'appid: '.$data->appid;echo '<br>';
-//		echo 'mch_id: '.$data->mch_id;echo '<br>';
-//		echo 'nonce_str: '.$data->nonce_str;echo '<br>';
-//		echo 'sign: '.$data->sign;echo '<br>';
-//		echo 'result_code: '.$data->result_code;echo '<br>';
-//		echo 'prepay_id: '.$data->prepay_id;echo '<br>';
-//		echo 'trade_type: '.$data->trade_type;echo '<br>'
-//      echo 'code_url: '.$data->code_url;echo '<br>';die;
-//        die;
-        //echo '<pre>';print_r($data);echo '</pre>';
-
         //将 code_url 返回给前端，前端生成 支付二维码
         $code_url=$data->code_url;
+        $number=$data->out_trade_no;
         $code_url=base64_encode($code_url);
-        header('refresh:0;url=/weixin/pay/totest/'.$code_url.'');
+        header('refresh:0;url=/weixin/pay/totest/'.$code_url.'/'.$number.'');
 
     }
-    public function totest($data){
+    public function totest($data,$number){
         $code_url=base64_decode($data);
         $arr=[
-            'list'=>$code_url
+            'list'=>$code_url,
+            'number'=>$number
         ];
         return view('order.code',$arr);
     }
@@ -176,8 +165,7 @@ class PayController extends Controller
                 //TODO 逻辑处理  订单状态更新
                 $res=$this->model($xml);
                 if($res){
-                    $amount=$xml['out_trade_no'];
-                    header('refresh:1;url=/weixin/pay/order/'.$amount.'');
+
                 }
             }else{
                 //TODO 验签失败
@@ -234,7 +222,8 @@ class PayController extends Controller
             return false;
         }
     }
-    public function order($number){
+    public function order(){
+        $number=$_GET['number'];
         $res=OrderModel::where(['order_number'=>$number])->first();
         if($res['order_status']==2){
             return 1;

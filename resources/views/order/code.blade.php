@@ -2,7 +2,7 @@
 
 @section('content')
         <input id="text" type="hidden" value="{{$list}}" /><br />
-
+        <input type="hidden" value="{{$number}}" id="number">
         <h2 align="center">扫码支付：</h2>
         <div id="qrcode" align="center"></div>
 @endsection
@@ -11,6 +11,7 @@
     @parent
     <script src="{{URL::asset('js/qrcode.js')}}"></script>
     <script>
+        var number=$('#number').val();
         setInterval(function(){
             $.ajax({
                 headers: {
@@ -18,6 +19,7 @@
                 },
                 url     :   '/weixin/pay/order',
                 type    :   'get',
+                data    :   {number:number},
                 success :   function(d){
                     if(d==1){
                         alert('支付成功');
