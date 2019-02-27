@@ -27,12 +27,11 @@
                     }
                 }
             });
-        },1000);
+        },3000);
         var qrcode = new QRCode("qrcode");
 
         function makeCode () {
             var elText = document.getElementById("text");
-            console.log(elText);
             if (!elText.value) {
                 alert("Input a text");
                 elText.focus();

@@ -28,7 +28,7 @@ class PayController extends Controller
             'mch_id' => env('WEIXIN_MCH_ID'),       // 商户ID
             'nonce_str' => str_random(16),             // 随机字符串
             'sign_type' => 'MD5',
-            'body' => '测试订单-' . mt_rand(1111, 9999) . str_random(6),
+            'body' => '测试订单-' .$order_id,
             'out_trade_no' => $order_id,                       //本地订单号
             'total_fee' => $total_fee,
             'spbill_create_ip' => $_SERVER['REMOTE_ADDR'],     //客户端IP
@@ -41,24 +41,20 @@ class PayController extends Controller
         $this->values = $order_info;
         $this->SetSign();
         $xml = $this->ToXml();      //将数组转换为XML
-
         $rs = $this->postXmlCurl($xml, $this->weixin_unifiedorder_url, $useCert = false, $second = 30);
         $data =  simplexml_load_string($rs);
-        //var_dump($data);echo '<hr>';
+
+        //var_dump($this->values);echo '<hr>';die;
         //将 code_url 返回给前端，前端生成 支付二维码
         $code_url=$data->code_url;
         $number=$data->out_trade_no;
-        $code_url=base64_encode($code_url);
-        header('refresh:0;url=/weixin/pay/totest/'.$code_url.''.$number.'');
-
-    }
-    public function totest($data,$number){
-        $code_url=base64_decode($data);
         $arr=[
             'list'=>$code_url,
             'number'=>$number
         ];
         return view('order.code',$arr);
+
+
     }
     protected function ToXml()
     {
@@ -225,7 +221,7 @@ class PayController extends Controller
     }
     public function order(){
         $number=$_GET['number'];
-        $res=OrderModel::where(['order_number'=>$number])->first()->toArray();
+        $res=OrderModel::where(['order_number'=>$number])->first();
         if($res['order_status']==3){
             echo 1;
         }
