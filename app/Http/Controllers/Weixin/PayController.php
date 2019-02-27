@@ -47,10 +47,9 @@ class PayController extends Controller
         //var_dump($this->values);echo '<hr>';die;
         //将 code_url 返回给前端，前端生成 支付二维码
         $code_url=$data->code_url;
-        $number=$data->out_trade_no;
         $arr=[
             'list'=>$code_url,
-            'number'=>$number
+            'number'=>$order_id
         ];
         return view('order.code',$arr);
 
