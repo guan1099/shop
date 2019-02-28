@@ -19,7 +19,7 @@ class CheckCookie
 
             echo json_encode([
                 'error' => 301,
-                'url'   => url('/login')
+                'url'   => url('/userlogin')
             ]);
             die;
         }
