@@ -10,10 +10,10 @@ use App\Model\CartModel;
 use App\Model\OrderDetailModel;
 class OrderController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
     //订单生成
     public function addorder(Request $request){
         $res=CartModel::where(['uid'=>session()->get('uid')])->get();

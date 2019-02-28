@@ -12,7 +12,9 @@ $("#add_cart_btn").click(function(e){
         data    :   {goods_id:goods_id,num:num},
         dataType:   'json',
         success :   function(d){
-            if(d.error!=301){
+            if(d.error==301){
+                window.location.href = d.url;
+            }else{
                 alert(d.msg);
                 window.location.href = "/cart/list";
             }
