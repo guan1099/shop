@@ -460,4 +460,10 @@ class WeixinController extends Controller
             echo "发送失败，请重试";
         }
     }
+    public function login(){
+        return view('kefu.login');
+    }
+    public function getCode(){
+        echo $_GET;
+    }
 }
