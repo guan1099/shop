@@ -464,6 +464,6 @@ class WeixinController extends Controller
         return view('kefu.login');
     }
     public function getCode(){
-        echo $_GET;
+        print_r( $_GET);
     }
 }
