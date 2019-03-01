@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use App\Model\WeixinUser;
+use App\Model\UserModel;
 use App\Model\WeixinMedia;
 use GuzzleHttp;
 use Illuminate\Support\Facades\Storage;
@@ -481,6 +482,21 @@ class WeixinController extends Controller
         $user_arr = json_decode($user_json,true);
         echo '<hr>';
         echo '<pre>';print_r($user_arr);echo '</pre>';
-
+    }
+    public function wxJssdk(){
+        $list=[
+            'appid'     =>env('WEIXIN_APPID'),
+            'timestamp' =>time(),
+            'nonceStr'  =>str_random('15'),
+            'sign'      =>$this->getJssdkSign()
+        ];
+        $data=[
+            'list'=>$list
+        ];
+        return view('kefu.jssdk',$data);
+    }
+    public function getJssdkSign(){
+        $sign=str_random('15');
+        return $sign;
     }
 }

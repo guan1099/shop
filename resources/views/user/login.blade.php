@@ -13,4 +13,5 @@
         </div>
         <button type="text" class="btn btn-primary" style="width:500px;">登录</button>
     </form>
+    <h1><a style="color:red" href="/weixin/login">微信扫码登录</a></h1>
 @endsection

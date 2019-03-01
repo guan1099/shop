@@ -109,3 +109,7 @@ Route::post('/weixin/pay/notice','Weixin\PayController@notice');     //微信支
 
 Route::get('/weixin/login','Weixin\WeixinController@login');
 Route::get('/weixin/getcode','Weixin\WeixinController@getCode');
+
+
+
+Route::get('/weixin/jssdk','Weixin\WeixinController@wxJssdk');
