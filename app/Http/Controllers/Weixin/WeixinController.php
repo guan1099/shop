@@ -513,7 +513,7 @@ class WeixinController extends Controller
                 setcookie('uid',$uid,time()+86400,'/','',false,true);
                 setcookie('token',$token,time()+86400,'/','',false,true);
                 $request->session()->put('u_token',$token);
-                $request->session()->put('uid',$res->uid);
+                $request->session()->put('uid',$uid);
                 header('refresh:1;/goodslist');
                 echo "登录成功,正在跳转";
             }
