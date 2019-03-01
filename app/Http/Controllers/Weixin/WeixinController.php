@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Weixin;
 
 
+use App\Model\UserModel;
 use App\Model\WeixinMaterial;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use App\Model\WeixinUser;
-use App\Model\UserModel;
 use App\Model\WeixinMedia;
 use GuzzleHttp;
 use Illuminate\Support\Facades\Storage;
@@ -465,7 +465,7 @@ class WeixinController extends Controller
     public function login(){
         return view('kefu.login');
     }
-    public function getCode(){
+    public function getCode(Request $request){
         $code=$_GET['code'];
         //2 用code换取access_token 请求接口
         $token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxe24f70961302b5a5&secret=0f121743ff20a3a454e4a12aeecef4be&code='.$code.'&grant_type=authorization_code';
@@ -483,6 +483,41 @@ class WeixinController extends Controller
         $user_arr = json_decode($user_json,true);
         echo '<hr>';
         echo '<pre>';print_r($user_arr);echo '</pre>';
+        $data=[
+            'nickname'=>$user_arr['nickname']
+        ];
+        $res=UserModel::where($data)->first();
+        if($res){
+            $token = substr(md5(time().mt_rand(1,99999)),10,10);
+            setcookie('uid',$res->uid,time()+86400,'/','',false,true);
+            setcookie('token',$token,time()+86400,'/','',false,true);
+            $request->session()->put('u_token',$token);
+            $request->session()->put('uid',$res->uid);
+            header('refresh:1;/goodslist');
+            echo "登录成功,正在跳转";
+        }else{
+            $uid=UserModel::insertGetId($data);
+            $data1=[
+                'uid'=>$uid,
+                'openid'=>$user_arr['openid'],
+                'nickname'=>$user_arr['nickname'],
+                'unionid'=>$user_arr['unionid'],
+                'sex'=>$user_arr['sex'],
+                'headimgur'=>$user_arr['headimgur'],
+                'add_time'=>time()
+            ];
+            $res=WeixinUser::insert($data1);
+            if($res){
+                $token = substr(md5(time().mt_rand(1,99999)),10,10);
+                setcookie('uid',$res->uid,time()+86400,'/','',false,true);
+                setcookie('token',$token,time()+86400,'/','',false,true);
+                $request->session()->put('u_token',$token);
+                $request->session()->put('uid',$res->uid);
+                header('refresh:1;/goodslist');
+                echo "登录成功,正在跳转";
+            }
+        }
+
     }
     public function wxJssdk(){
         $list=[
