@@ -506,8 +506,8 @@ class WeixinController extends Controller
                 'headimgurl'=>$user_arr['headimgur'],
                 'add_time'=>time()
             ];
-            $res=WeixinUser::insert($data1);
-            if($res){
+            $res=WeixinUser::insertGetId($data1);
+            if(!empty($res)){
                 $token = substr(md5(time().mt_rand(1,99999)),10,10);
                 setcookie('uid',$res->uid,time()+86400,'/','',false,true);
                 setcookie('token',$token,time()+86400,'/','',false,true);
