@@ -506,10 +506,11 @@ class WeixinController extends Controller
                 'headimgurl'=>$user_arr['headimgurl'],
                 'add_time'=>time()
             ];
-            $res=WeixinUser::insertGetId($data1);
-            if(!empty($res)){
+            $rel=WeixinUser::insertGetId($data1);
+            echo $rel;
+            if(!empty($rel)){
                 $token = substr(md5(time().mt_rand(1,99999)),10,10);
-                setcookie('uid',$res->uid,time()+86400,'/','',false,true);
+                setcookie('uid',$uid,time()+86400,'/','',false,true);
                 setcookie('token',$token,time()+86400,'/','',false,true);
                 $request->session()->put('u_token',$token);
                 $request->session()->put('uid',$res->uid);
@@ -517,7 +518,6 @@ class WeixinController extends Controller
                 echo "登录成功,正在跳转";
             }
         }
-
     }
     public function wxJssdk(){
         $list=[
