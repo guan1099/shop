@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 class WeixinController extends Controller
 {
     protected $redis_weixin_access_token = 'str:weixin_access_token';     //微信 access_token
+    protected $redis_weixin_jsapi_ticket = 'str:weixin_access_ticket';     //微信 access_ticket
     //
     public function validToken1()
     {
@@ -487,16 +488,35 @@ class WeixinController extends Controller
         $list=[
             'appid'     =>env('WEIXIN_APPID'),
             'timestamp' =>time(),
-            'nonceStr'  =>str_random('15'),
-            'sign'      =>$this->getJssdkSign()
+            'nonceStr'  =>str_random('10')
         ];
+        $list['sign']=$this->getJssdkSign($list);
         $data=[
             'list'=>$list
         ];
         return view('kefu.jssdk',$data);
     }
-    public function getJssdkSign(){
-        $sign=str_random('15');
-        return $sign;
+    public function getJssdkSign($list){
+        $current_url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];     //当前调用 jsapi的 url
+        $ticket=$this->getJsTicket();
+        $str =  'jsapi_ticket='.$ticket.'&noncestr='.$list['nonceStr']. '&timestamp='. $list['timestamp']. '&url='.$current_url;
+        $signature=sha1($str);
+        //print_r($signature);die;
+        return $signature;
+    }
+    public function getJsTicket(){
+        $token=$this->getWXAccessToken();
+        $ticket=Redis::get($this->redis_weixin_jsapi_ticket);
+        if(!$ticket){
+            $ticket_url="https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=".$token."&type=jsapi";
+            $ticket_info = file_get_contents($ticket_url);
+            $ticket_arr = json_decode($ticket_info,true);
+            if(isset($ticket_arr['ticket'])){
+                $ticket = $ticket_arr['ticket'];
+                Redis::set($this->redis_weixin_jsapi_ticket,$ticket);           //存
+                Redis::setTimeout($this->redis_weixin_jsapi_ticket,3600);       //设置过期时间 3600s
+            }
+        }
+        return $ticket;
     }
 }
