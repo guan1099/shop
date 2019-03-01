@@ -503,7 +503,7 @@ class WeixinController extends Controller
                 'nickname'=>$user_arr['nickname'],
                 'unionid'=>$user_arr['unionid'],
                 'sex'=>$user_arr['sex'],
-                'headimgur'=>$user_arr['headimgur'],
+                'headimgurl'=>$user_arr['headimgur'],
                 'add_time'=>time()
             ];
             $res=WeixinUser::insert($data1);
