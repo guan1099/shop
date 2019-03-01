@@ -20,7 +20,7 @@
             timestamp: "{{$list['timestamp']}}", // 必填，生成签名的时间戳
             nonceStr: "{{$list['nonceStr']}}", // 必填，生成签名的随机串
             signature: "{{$list['sign']}}",// 必填，签名
-            jsApiList: ['chooseImage'] // 必填，需要使用的JS接口列表
+            jsApiList: ['chooseImage','scanQRCode'] // 必填，需要使用的JS接口列表
         });
         wx.ready(function(){
             $("#btn1").click(function () {
