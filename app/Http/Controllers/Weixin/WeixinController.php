@@ -484,7 +484,7 @@ class WeixinController extends Controller
         echo '<hr>';
         echo '<pre>';print_r($user_arr);echo '</pre>';
         $data=[
-            'nickname'=>$user_arr['nickname']
+            'username'=>$user_arr['nickname']
         ];
         $res=UserModel::where($data)->first();
         if($res){
