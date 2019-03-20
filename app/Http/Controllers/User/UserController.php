@@ -100,8 +100,8 @@ class UserController extends Controller
         }
     }
     public function userlogin(Request $request){
-        $username=$_POST['username'];
-        $pwd=$_POST['pwd'];
+//        $username=$_POST['username'];
+//        $pwd=$_POST['pwd'];
 //        $where=[
 //            'username'=>$username
 //        ];
