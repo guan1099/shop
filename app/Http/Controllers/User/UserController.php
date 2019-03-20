@@ -108,15 +108,31 @@ class UserController extends Controller
         ];
         $res=UserModel::where($where)->first();
         if($res){
-            $arr=[
-                'error'=>0,
-                'msg'=>'ok'
-            ];
-            echo json_encode($arr);
+            if(password_verify($pwd,$res->pwd)){
+                $token = substr(md5(time().mt_rand(1,99999)),10,10);
+                setcookie('uid',$res->uid,time()+86400,'/','',false,true);
+                setcookie('token',$token,time()+86400,'/','',false,true);
+                $request->session()->put('u_token',$token);
+                $request->session()->put('uid',$res->uid);
+                header('refresh:1;/goodslist');
+                $arr=[
+                    'error'=>0,
+                    'msg'=>'ok'
+                ];
+                echo json_encode($arr);
+            }else{
+                header('refresh:1;/userlogin');
+                $arr=[
+                    'error'=>0,
+                    'msg'=>'no'
+                ];
+                echo json_encode($arr);
+            }
+
         }else{
             $arr=[
                 'error'=>50000,
-                'msg'=>'no'
+                'msg'=>'no no'
             ];
             echo json_encode($arr);
         }
