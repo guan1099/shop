@@ -141,7 +141,7 @@ class UserController extends Controller
         if(empty($request->input('username'))){
             $arr=[
                 'error'=>0,
-                'msg'=>'账号不能为空'
+                'msg'=>'zhanghaokong'
             ];
             echo json_encode($arr);
         }
@@ -152,21 +152,21 @@ class UserController extends Controller
         if($rel){
             $arr=[
                 'error'=>401,
-                'msg'=>'账号已注册'
+                'msg'=>'zhanghaoyizhuce'
             ];
             echo json_encode($arr);
         }
         if(empty($request->input('pwd'))){
             $arr=[
                 'error'=>402,
-                'msg'=>'密码不能为空'
+                'msg'=>'mimabunengweikong'
             ];
             echo json_encode($arr);
         }
         if($request->input('pwd')!==$request->input('pwd1')){
             $arr=[
                 'error'=>403,
-                'msg'=>'密码不一致'
+                'msg'=>'mimabuyizhi'
             ];
             echo json_encode($arr);
         }
@@ -183,14 +183,14 @@ class UserController extends Controller
             header("refresh:2;/test/list");
             $arr=[
                 'error'=>0,
-                'msg'=>'注册成功'
+                'msg'=>'zhucecg'
             ];
             echo json_encode($arr);
         }else{
             header('Location:/userregister');
             $arr=[
                 'error'=>404,
-                'msg'=>'注册失败'
+                'msg'=>'zhuceshibai'
             ];
             echo json_encode($arr);
         }
