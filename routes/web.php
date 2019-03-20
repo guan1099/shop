@@ -54,7 +54,7 @@ Route::post('/userregister','User\UserController@registerdo');
 //登录
 Route::get('/userlogin','User\UserController@login');
 Route::post('/userlogin','User\UserController@logindo');
-Route::any('/userlogini','User\UserController@userLogin');
+Route::any('/test/userlogini','User\UserController@userLogin');
 //购物车
 Route::get('/cart/list','Cart\CartController@list');
 Route::post('/cart/addcart','Cart\CartController@addcart')->middleware('check.cookie');
