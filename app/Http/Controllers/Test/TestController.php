@@ -11,9 +11,6 @@ use GuzzleHttp\Client;
 class TestController extends Controller
 {
     public function test(Request $request){
-        $arr=$_POST;
-        print_r($arr);
-        die;
         $arr=[
             'error'=>0,
             'msg'=>'ok'
