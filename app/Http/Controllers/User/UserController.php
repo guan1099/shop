@@ -114,13 +114,24 @@ class UserController extends Controller
                 $request->session()->put('u_token',$token);
                 $request->session()->put('uid',$res->uid);
                 header('refresh:1;/goodslist');
-                echo "登录成功,正在跳转";
+                $arr=[
+                    'error'=>0,
+                    'msg'=>'ok'
+                ];
+                echo json_encode($arr);
             }else{
-                header('refresh:1;/userlogin');
-                echo "账号或密码错误";
+                $arr=[
+                    'error'=>40003,
+                    'msg'=>'no'
+                ];
+                echo json_encode($arr);
             }
         }else{
-            echo "账号不存在";
+            $arr=[
+                'error'=>50000,
+                'msg'=>'no no'
+            ];
+            echo json_encode($arr);
             header('refresh:1;/userlogin');
         }
     }
