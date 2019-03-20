@@ -100,11 +100,11 @@ class UserController extends Controller
         }
     }
     public function userLogin(Request $request){
-        //$username=$_POST['username'];
-        //$pwd=$_POST['pwd'];
+        $username=$request->post('username');
+        $pwd=$request->post('pwd');
         $where=[
-            'username'=>11,
-            'pwd'=>111
+            'username'=>$username,
+            'pwd'=>$pwd
         ];
         $res=UserModel::where($where)->first();
         if($res){
