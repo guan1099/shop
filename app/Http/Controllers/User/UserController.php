@@ -102,37 +102,37 @@ class UserController extends Controller
     public function userlogin(Request $request){
         $username=$_POST['username'];
         $pwd=$_POST['pwd'];
-        $where=[
-            'username'=>$username
-        ];
-        $res=UserModel::where($where)->first();
-        if($res){
-            if(password_verify($pwd,$res->pwd)){
-                $token = substr(md5(time().mt_rand(1,99999)),10,10);
-                setcookie('uid',$res->uid,time()+86400,'/','',false,true);
-                setcookie('token',$token,time()+86400,'/','',false,true);
-                $request->session()->put('u_token',$token);
-                $request->session()->put('uid',$res->uid);
-                header('refresh:1;/goodslist');
+//        $where=[
+//            'username'=>$username
+//        ];
+//        $res=UserModel::where($where)->first();
+//        if($res){
+//            if(password_verify($pwd,$res->pwd)){
+//                $token = substr(md5(time().mt_rand(1,99999)),10,10);
+//                setcookie('uid',$res->uid,time()+86400,'/','',false,true);
+//                setcookie('token',$token,time()+86400,'/','',false,true);
+//                $request->session()->put('u_token',$token);
+//                $request->session()->put('uid',$res->uid);
+//                header('refresh:1;/goodslist');
                 $arr=[
                     'error'=>0,
                     'msg'=>'ok'
                 ];
                 echo json_encode($arr);
-            }else{
-                $arr=[
-                    'error'=>40003,
-                    'msg'=>'no'
-                ];
-                echo json_encode($arr);
-            }
-        }else{
-            $arr=[
-                'error'=>50000,
-                'msg'=>'no no'
-            ];
-            echo json_encode($arr);
-            header('refresh:1;/userlogin');
-        }
+//            }else{
+//                $arr=[
+//                    'error'=>40003,
+//                    'msg'=>'no'
+//                ];
+//                echo json_encode($arr);
+//            }
+//        }else{
+//            $arr=[
+//                'error'=>50000,
+//                'msg'=>'no no'
+//            ];
+//            echo json_encode($arr);
+//            header('refresh:1;/userlogin');
+//        }
     }
 }
