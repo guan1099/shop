@@ -103,8 +103,7 @@ class UserController extends Controller
         $username=$request->post('username');
         $pwd=$request->post('pwd');
         $where=[
-            'username'=>$username,
-            'pwd'=>$pwd
+            'username'=>$username
         ];
         $res=UserModel::where($where)->first();
         if($res){
@@ -128,7 +127,6 @@ class UserController extends Controller
                 ];
                 echo json_encode($arr);
             }
-
         }else{
             $arr=[
                 'error'=>50000,
