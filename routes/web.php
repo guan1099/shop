@@ -51,6 +51,7 @@ Route::any('/test/list','Test\TestController@list')->middleware('check.login.tok
 //注册
 Route::get('/userregister','User\UserController@register');
 Route::post('/userregister','User\UserController@registerdo');
+Route::any('/test/reg','User\UserController@reg');
 //登录
 Route::get('/userlogin','User\UserController@login');
 Route::post('/userlogin','User\UserController@logindo');

@@ -99,6 +99,7 @@ class UserController extends Controller
             header('refresh:1;/userlogin');
         }
     }
+    //登录接口
     public function userLogin(Request $request){
         $username=$request->post('username');
         $pwd=$request->post('pwd');
@@ -133,6 +134,65 @@ class UserController extends Controller
                 'msg'=>'no no'
             ];
             echo json_encode($arr);
+        }
+    }
+    //注册接口
+    public function reg(Request $request){
+        if(empty($request->input('username'))){
+            $arr=[
+                'error'=>0,
+                'msg'=>'账号不能为空'
+            ];
+            echo \GuzzleHttp\json_encode($arr);
+        }
+        $where=[
+            'username'=>$request->input('username')
+        ];
+        $rel=UserModel::where($where)->first();
+        if($rel){
+            $arr=[
+                'error'=>401,
+                'msg'=>'账号已注册'
+            ];
+            echo \GuzzleHttp\json_encode($arr);
+        }
+        if(empty($request->input('pwd'))){
+            $arr=[
+                'error'=>402,
+                'msg'=>'密码不能为空'
+            ];
+            echo \GuzzleHttp\json_encode($arr);
+        }
+        if($request->input('pwd')!==$request->input('pwd1')){
+            $arr=[
+                'error'=>403,
+                'msg'=>'密码不一致'
+            ];
+            echo \GuzzleHttp\json_encode($arr);
+        }
+        $data=[
+            'username'=>$request->input('username'),
+            'pwd'=>password_hash($request->input('pwd'),PASSWORD_BCRYPT),
+            'age'=>$request->input('age'),
+            'email'=>$request->input('email'),
+            'atime'=>time()
+        ];
+        $uid=UserModel::insertGetId($data);
+        if($uid){
+            setcookie('uid',$uid,time()+86400,'/','',false,true);
+            header("refresh:2;/test/list");
+            $arr=[
+                'error'=>0,
+                'msg'=>'注册成功'
+            ];
+            echo \GuzzleHttp\json_encode($arr);
+        }else{
+            header('Location:/userregister');
+            $arr=[
+                'error'=>404,
+                'msg'=>'注册失败'
+            ];
+            echo \GuzzleHttp\json_encode($arr);
         }
     }
 }
