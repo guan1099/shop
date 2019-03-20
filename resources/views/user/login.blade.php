@@ -1,6 +1,6 @@
 @extends('layouts.mama')
 @section('content')
-    <form action="/userlogini" method="post">
+    <form action="/test/userlogini" method="post">
         {{csrf_field()}}
         <font size="24px">登录</font>
         <div class="form-group">
