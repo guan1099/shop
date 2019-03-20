@@ -99,7 +99,7 @@ class UserController extends Controller
             header('refresh:1;/userlogin');
         }
     }
-    public function userlogin(Request $request){
+    public function userLogin(Request $request){
 //        $username=$_POST['username'];
 //        $pwd=$_POST['pwd'];
 //        $where=[
