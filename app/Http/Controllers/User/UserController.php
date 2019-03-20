@@ -143,7 +143,7 @@ class UserController extends Controller
                 'error'=>0,
                 'msg'=>'账号不能为空'
             ];
-            echo \GuzzleHttp\json_encode($arr);
+            echo json_encode($arr);
         }
         $where=[
             'username'=>$request->input('username')
@@ -154,21 +154,21 @@ class UserController extends Controller
                 'error'=>401,
                 'msg'=>'账号已注册'
             ];
-            echo \GuzzleHttp\json_encode($arr);
+            echo json_encode($arr);
         }
         if(empty($request->input('pwd'))){
             $arr=[
                 'error'=>402,
                 'msg'=>'密码不能为空'
             ];
-            echo \GuzzleHttp\json_encode($arr);
+            echo json_encode($arr);
         }
         if($request->input('pwd')!==$request->input('pwd1')){
             $arr=[
                 'error'=>403,
                 'msg'=>'密码不一致'
             ];
-            echo \GuzzleHttp\json_encode($arr);
+            echo json_encode($arr);
         }
         $data=[
             'username'=>$request->input('username'),
@@ -185,14 +185,14 @@ class UserController extends Controller
                 'error'=>0,
                 'msg'=>'注册成功'
             ];
-            echo \GuzzleHttp\json_encode($arr);
+            echo json_encode($arr);
         }else{
             header('Location:/userregister');
             $arr=[
                 'error'=>404,
                 'msg'=>'注册失败'
             ];
-            echo \GuzzleHttp\json_encode($arr);
+            echo json_encode($arr);
         }
     }
 }
