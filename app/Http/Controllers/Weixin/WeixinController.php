@@ -222,20 +222,17 @@ class WeixinController extends Controller
      */
     public function getWXAccessToken()
     {
-
         //获取缓存
         $token = Redis::get($this->redis_weixin_access_token);
         if(!$token){        // 无缓存 请求微信接口
             $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WEIXIN_APPID').'&secret='.env('WEIXIN_APPSECRET');
             $data = json_decode(file_get_contents($url),true);
-
             //记录缓存
             $token = $data['access_token'];
             Redis::set($this->redis_weixin_access_token,$token);
             Redis::setTimeout($this->redis_weixin_access_token,3600);
         }
         return $token;
-
     }
 
     /**
@@ -252,7 +249,8 @@ class WeixinController extends Controller
         //echo '<pre>';print_r($data);echo '</pre>';
         return $data;
     }
-    public function createMenu(){
+    public function createMenu()
+    {
         //获取token 拼接接口
         $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->getWXAccessToken();
         //2 请求微信接口
@@ -285,7 +283,6 @@ class WeixinController extends Controller
                     "name"  => "项目",
                     "url"   => "https://qi.tactshan.com"
                 ]
-
             ]
         ];
 
@@ -303,7 +300,6 @@ class WeixinController extends Controller
         }else{
             echo "菜单创建失败，请重试";echo '</br>';
             echo $response_arr['errmsg'];
-
         }
     }
     public function keFu($openid,$from)

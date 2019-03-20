@@ -41,7 +41,7 @@ Route::view('/error','error',['code'=>403]);
 Route::get('/query/get','Test\TestController@query1');
 Route::get('/query/where','Test\TestController@query2');
 
-
+Route::any('/test/test','Test\TestController@test');
 Route::any('/test/abc','Test\TestController@abc');
 Route::any('/test/add','Test\TestController@add');
 Route::any('/test/list','Test\TestController@list')->middleware('check.login.token');

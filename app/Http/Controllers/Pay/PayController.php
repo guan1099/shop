@@ -66,7 +66,6 @@ class PayController extends Controller
             'notify_url'   => $this->notify_url,
             'biz_content'   => json_encode($bizcont),
         ];
-
         $sign = $this->rsaSign($data);
         $data['sign'] = $sign;
         $param_str = '?';
@@ -78,7 +77,6 @@ class PayController extends Controller
         header("Location:".$url);
     }
 
-
     public function rsaSign($params) {
         return $this->sign($this->getSignContent($params));
     }
@@ -86,6 +84,7 @@ class PayController extends Controller
     protected function sign($data) {
 
         $priKey = file_get_contents($this->rsaPrivateKeyFilePath);
+
         $res = openssl_get_privatekey($priKey);
 
         ($res) or die('您使用的私钥格式错误，请检查RSA私钥配置');
@@ -95,11 +94,11 @@ class PayController extends Controller
         if(!$this->checkEmpty($this->rsaPrivateKeyFilePath)){
             openssl_free_key($res);
         }
+
         $sign = base64_encode($sign);
+
         return $sign;
     }
-
-
     public function getSignContent($params) {
         ksort($params);
         $stringToBeSigned = "";
@@ -117,7 +116,6 @@ class PayController extends Controller
                 $i++;
             }
         }
-
         unset ($k, $v);
         return $stringToBeSigned;
     }
@@ -169,7 +167,6 @@ class PayController extends Controller
         ($res) or die('支付宝RSA公钥错误。请检查公钥文件格式是否正确');
 
         //调用openssl内置方法验签，返回bool值
-
         $result = (openssl_verify($this->getSignContent($params), base64_decode($sign), $res, OPENSSL_ALGO_SHA256)===1);
         openssl_free_key($res);
 
