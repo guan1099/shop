@@ -138,13 +138,13 @@ class UserController extends Controller
     }
     //注册接口
     public function reg(Request $request){
-        //if(empty($request->input('username'))){
+        if(empty($request->input('username'))){
             $arr=[
                 'error'=>0,
                 'msg'=>'zhanghaokong'
             ];
             echo json_encode($arr);
-//        }
+        }
 //        $where=[
 //            'username'=>$request->input('username')
 //        ];
