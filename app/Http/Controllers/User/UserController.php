@@ -138,7 +138,8 @@ class UserController extends Controller
     }
     //注册接口
     public function reg(Request $request){
-        if(empty($request->input('username'))){
+        $username=$request->input('username');
+        if(empty($username)){
             $arr=[
                 'error'=>0,
                 'msg'=>'zhanghaokong'
@@ -146,7 +147,7 @@ class UserController extends Controller
             echo json_encode($arr);
         }
         $where=[
-            'username'=>$request->input('username')
+            'username'=>$username
         ];
         $rel=UserModel::where($where)->first();
         if($rel){
@@ -156,43 +157,43 @@ class UserController extends Controller
             ];
             echo json_encode($arr);
         }
-//        if(empty($request->input('pwd'))){
-//            $arr=[
-//                'error'=>402,
-//                'msg'=>'mimabunengweikong'
-//            ];
-//            echo json_encode($arr);
-//        }
-//        if($request->input('pwd')!==$request->input('pwd1')){
-//            $arr=[
-//                'error'=>403,
-//                'msg'=>'mimabuyizhi'
-//            ];
-//            echo json_encode($arr);
-//        }
-//        $data=[
-//            'username'=>$request->input('username'),
-//            'pwd'=>password_hash($request->input('pwd'),PASSWORD_BCRYPT),
-//            'age'=>$request->input('age'),
-//            'email'=>$request->input('email'),
-//            'atime'=>time()
-//        ];
-//        $uid=UserModel::insertGetId($data);
-//        if($uid){
-//            setcookie('uid',$uid,time()+86400,'/','',false,true);
-//            header("refresh:2;/test/list");
-//            $arr=[
-//                'error'=>0,
-//                'msg'=>'zhucecg'
-//            ];
-//            echo json_encode($arr);
-//        }else{
-//            header('Location:/userregister');
-//            $arr=[
-//                'error'=>404,
-//                'msg'=>'zhuceshibai'
-//            ];
-//            echo json_encode($arr);
-//        }
+        if(empty($request->input('pwd'))){
+            $arr=[
+                'error'=>402,
+                'msg'=>'mimabunengweikong'
+            ];
+            echo json_encode($arr);
+        }
+        if($request->input('pwd')!==$request->input('pwd1')){
+            $arr=[
+                'error'=>403,
+                'msg'=>'mimabuyizhi'
+            ];
+            echo json_encode($arr);
+        }
+        $data=[
+            'username'=>$username,
+            'pwd'=>password_hash($request->input('pwd'),PASSWORD_BCRYPT),
+            'age'=>$request->input('age'),
+            'email'=>$request->input('email'),
+            //'created_at'=>time()
+        ];
+        $uid=UserModel::insertGetId($data);
+        if($uid){
+            setcookie('uid',$uid,time()+86400,'/','',false,true);
+            header("refresh:2;/test/list");
+            $arr=[
+                'error'=>0,
+                'msg'=>'zhucecg'
+            ];
+            echo json_encode($arr);
+        }else{
+            header('Location:/userregister');
+            $arr=[
+                'error'=>404,
+                'msg'=>'zhuceshibai'
+            ];
+            echo json_encode($arr);
+        }
     }
 }
