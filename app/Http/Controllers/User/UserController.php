@@ -144,7 +144,7 @@ class UserController extends Controller
                 'error'=>0,
                 'msg'=>'zhanghaokong'
             ];
-            echo json_encode($arr);
+            echo json_encode($arr);die;
         }
         $where=[
             'username'=>$username
@@ -155,21 +155,21 @@ class UserController extends Controller
                 'error'=>401,
                 'msg'=>'zhanghaoyizhuce'
             ];
-            echo json_encode($arr);
+            echo json_encode($arr);die;
         }
         if(empty($request->input('pwd'))){
             $arr=[
                 'error'=>402,
                 'msg'=>'mimabunengweikong'
             ];
-            echo json_encode($arr);
+            echo json_encode($arr);die;
         }
         if($request->input('pwd')!==$request->input('pwd1')){
             $arr=[
                 'error'=>403,
                 'msg'=>'mimabuyizhi'
             ];
-            echo json_encode($arr);
+            echo json_encode($arr);die;
         }
         $data=[
             'username'=>$username,
