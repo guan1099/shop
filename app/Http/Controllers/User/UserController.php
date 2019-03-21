@@ -145,17 +145,17 @@ class UserController extends Controller
             ];
             echo json_encode($arr);
         }
-//        $where=[
-//            'username'=>$request->input('username')
-//        ];
-//        $rel=UserModel::where($where)->first();
-//        if($rel){
-//            $arr=[
-//                'error'=>401,
-//                'msg'=>'zhanghaoyizhuce'
-//            ];
-//            echo json_encode($arr);
-//        }
+        $where=[
+            'username'=>$request->input('username')
+        ];
+        $rel=UserModel::where($where)->first();
+        if($rel){
+            $arr=[
+                'error'=>401,
+                'msg'=>'zhanghaoyizhuce'
+            ];
+            echo json_encode($arr);
+        }
 //        if(empty($request->input('pwd'))){
 //            $arr=[
 //                'error'=>402,
