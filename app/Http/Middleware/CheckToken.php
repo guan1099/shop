@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Redis;
 
 class CheckToken
 {
@@ -16,7 +17,13 @@ class CheckToken
     public function handle($request, Closure $next)
     {
         if(isset($_COOKIE['uid'])&&isset($_COOKIE['token'])){
-            $request->attributes->add(['is_login'=>1]);
+            $redis_token='redis_token_str:'.$_COOKIE['uid'].'';
+            if(Redis::get($redis_token)==$_COOKIE['token']){
+                $request->attributes->add(['is_login'=>1]);
+            }else{
+                $request->attributes->add(['is_login'=>0]);
+                echo "登录失败";die;
+            }
         }else{
             $request->attributes->add(['is_login'=>0]);
         }

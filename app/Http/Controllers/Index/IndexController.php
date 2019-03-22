@@ -27,6 +27,7 @@ class IndexController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//设置获取的信息以文件流的形式返回，而不是直接输出
         $re=curl_exec($ch);
         $a=json_decode($re,true);
-        return $a;
+        $data=json_encode($a);
+        print_r($data);
     }
 }
