@@ -14,6 +14,7 @@ class UserController extends Controller
     //use Searchable;
     public function goodslist(Request $request){
         $name=$request->input('goods_name');
+        //setcookie('token',$token,time()+86400,'/','',false,true);
         if(empty($name)){
             $res=GoodsModel::paginate(3);
         }else{

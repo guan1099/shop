@@ -11,10 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'Index\IndexController@index')->middleware('check.token');
+Route::post('/test/curl', 'Index\IndexController@curl');
 Route::get('/adduser','User\UserController@add');
 
 //路由跳转

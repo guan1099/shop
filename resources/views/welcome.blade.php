@@ -71,8 +71,8 @@
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
+                        <a href="http://zi.tactshan.com/user/login?url="{{$url}}>Login</a>
+                        <a href="http://zi.tactshan.com/user/registerurl="{{$url}}>Register</a>
                     @endauth
                 </div>
             @endif

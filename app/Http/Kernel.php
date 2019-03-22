@@ -62,5 +62,6 @@ class Kernel extends HttpKernel
         'check.time'=>\App\Http\Middleware\CheckTime::class,
         'check.cookie'=>\App\Http\Middleware\CheckCookie::class,
         'check.login.token'=>\App\Http\Middleware\CheckLoginToken::class,
+        'check.token'=>\App\Http\Middleware\CheckToken::class,
     ];
 }
