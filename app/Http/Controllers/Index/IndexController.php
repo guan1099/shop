@@ -9,10 +9,12 @@ class IndexController extends Controller
 {
     //
     public function index(Request $request){
-        $url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'';
+        //$url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'';
+        $is_login=$request->get('is_login');
+        //print_r($is_login);die;
         $data=[
-            'is_login'=>$request->get('is_login'),
-            'url'=>$url
+            'is_login'=>$is_login,
+            //'url'=>$url
         ];
         return view('index.index',$data);
     }
