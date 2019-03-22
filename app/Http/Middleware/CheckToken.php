@@ -22,7 +22,8 @@ class CheckToken
                 $request->attributes->add(['is_login'=>1]);
             }else{
                 $request->attributes->add(['is_login'=>0]);
-                echo "登录失败";die;
+                echo "登录失败";
+                header('refresh:2;/user/login');
             }
         }else{
             $request->attributes->add(['is_login'=>0]);
