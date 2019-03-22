@@ -18,7 +18,7 @@ class CheckToken
     {
         if(isset($_COOKIE['uid'])&&isset($_COOKIE['token'])){
             $redis_token='redis_token_str:'.$_COOKIE['uid'].'';
-            if(Redis::hGet($redis_token,'token')==$_COOKIE['token']){
+            if(Redis::hGet($redis_token,'web')==$_COOKIE['token']){
                 $request->attributes->add(['is_login'=>1]);
             }else{
                 $request->attributes->add(['is_login'=>0]);
