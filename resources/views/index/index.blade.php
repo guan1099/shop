@@ -70,8 +70,8 @@
         <div class="top-right links">
              @if ($is_login==1)
                 <a href="{{ url('/home') }}">Home</a>
-            @else
                 <a href="http://zi.tactshan.com/cookie/quit">退出</a>
+            @else
                 <a href="http://zi.tactshan.com/user/login">登录</a>
                 <a href="http://zi.tactshan.com/user/register">注册</a>
             @endif
