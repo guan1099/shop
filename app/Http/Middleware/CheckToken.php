@@ -22,8 +22,6 @@ class CheckToken
                 $request->attributes->add(['is_login'=>1]);
             }else{
                 $request->attributes->add(['is_login'=>0]);
-                //header('refresh:2;http://zi.tactshan.com/user/login');
-                //die ("登录失败");
             }
         }else{
             $request->attributes->add(['is_login'=>0]);
