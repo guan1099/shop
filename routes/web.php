@@ -13,6 +13,7 @@
 
 Route::get('/', 'Index\IndexController@index')->middleware('check.token');
 Route::any('/test/curl', 'Index\IndexController@curl');
+Route::any('/test/quit', 'Index\IndexController@quit');
 Route::get('/adduser','User\UserController@add');
 
 //路由跳转
