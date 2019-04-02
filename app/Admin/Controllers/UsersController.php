@@ -33,7 +33,7 @@ class UsersController extends Controller
         $grid->username('昵称');
         $grid->age('年龄');
         $grid->email('邮箱');
-        $grid->created_at('注册时间');
+        $grid->atime('注册时间');
         $grid->type()->display(function($t){
             if($t==1){
                 return "离线";
