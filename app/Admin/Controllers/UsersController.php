@@ -34,7 +34,13 @@ class UsersController extends Controller
         $grid->age('年龄');
         $grid->email('邮箱');
         $grid->created_at('注册时间');
-
+        $grid->type()->display(function($t){
+            if($t==1){
+                return "离线";
+            }else{
+                return "在线";
+            }
+        });
         return $grid;
     }
 
